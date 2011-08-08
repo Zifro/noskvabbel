@@ -9,7 +9,11 @@ group :production do
   gem 'pg'
 end
 group :development, :test do
-  gem 'sqlite3'
+  gem 'sqlite3-ruby', :require => 'sqlite3'
+	gem 'rspec-rails'
+	gem 'cucumber-rails'
+	gem 'webrat'
+	gem 'database_cleaner'
 end
 
 # Use unicorn as the web server
