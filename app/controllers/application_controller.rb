@@ -3,9 +3,8 @@ class ApplicationController < ActionController::Base
   
   before_filter :get_user_from_session
 
-  # See ActionController::RequestForgeryProtection for details
   # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+  filter_parameter_logging :password
 
   helper_method :current_user
 
