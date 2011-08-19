@@ -1,0 +1,23 @@
+<% if flash[:notice ]%>
+	<p id="flash"><%= flash[:notice]%></p>
+<% end %>
+
+<p>List of expenses</p>
+
+<% if @expenses.any? %>
+<table>
+	<tr>
+		<th>What</th>
+		<th>How much</th>
+		<th>When</th>
+		<th>Who</th>
+	</tr>
+	<% @expenses.each do |exp| %>
+	<tr>
+		<td><%= exp.label %></td>
+		<td><%= exp.amount %></td>
+		<td><%= exp.spent_on %></td>
+		<td><%= exp.user.username %></td>
+	<% end %>
+	
+<% end %>
