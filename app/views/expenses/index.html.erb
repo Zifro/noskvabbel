@@ -15,7 +15,7 @@
 	<% @expenses.each do |exp| %>
 	<tr>
 		<td><%= exp.label %></td>
-		<td><%= exp.amount %></td>
+		<td><%= number_to_currency(exp.amount) %></td>
 		<td><%= exp.spent_on %></td>
 		<td><%= exp.user.username %></td>
 	<% end %>
