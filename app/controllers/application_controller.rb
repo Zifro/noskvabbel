@@ -3,9 +3,6 @@ class ApplicationController < ActionController::Base
   
   before_filter :get_user_from_session
 
-  # Scrub sensitive parameters from your log
-  filter_parameter_logging :password
-
   helper_method :current_user
 
   private
