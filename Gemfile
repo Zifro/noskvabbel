@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.10'
 
+gem 'authlogic'
+
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -14,6 +16,7 @@ group :development, :test do
 	gem 'cucumber-rails'
 	gem 'webrat'
 	gem 'database_cleaner'
+	gem 'syntax'
 end
 
 # Use unicorn as the web server

@@ -12,10 +12,10 @@ Given /^I am logged in as (.+)$/ do |username|
                :password              => "tagada",
                :password_confirmation => "tagada"
   )
-  visit "/"
+  visit "/login"
   fill_in "user_session[username]", :with => username
   fill_in "user_session[password]", :with => "tagada"
-  click_button "Go !"
+  click_button "Login"
 end
 
 Given /^I'm not logged in$/ do

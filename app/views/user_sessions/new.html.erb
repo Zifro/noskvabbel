@@ -1,0 +1,23 @@
+<h3>Login</h3>
+
+<p id="flash"><%= flash[:notice]%></p>
+
+<% form_for(@user_session) do |f| %>
+	<% if @user_session.errors.any? %>
+	<p id="errors">
+		The following errors prevented you from login in the application
+		<ul>
+			<% @user_session.errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			<% end %>
+		</ul>
+	</p>
+	<% end %>
+
+  <%= f.label :username %> <%= f.text_field :username %>
+  <br/>
+  <%= f.label :password %> <%= f.password_field :password %>
+  <br/>
+  <%= f.submit 'Login' %>
+  
+<% end %>
