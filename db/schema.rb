@@ -11,7 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110819110209) do
+ActiveRecord::Schema.define(:version => 20110819121816) do
+
+  create_table "couples", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "expenses", :force => true do |t|
+    t.integer  "user_id"
+    t.decimal  "amount"
+    t.string   "label"
+    t.date     "spent_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "user_sessions", :force => true do |t|
     t.string   "username"
@@ -26,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20110819110209) do
     t.string   "crypted_password"
     t.string   "password_salt"
     t.string   "persistence_token"
+    t.integer  "couple_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

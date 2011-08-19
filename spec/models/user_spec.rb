@@ -2,6 +2,18 @@ require 'spec_helper'
 
 describe User do
 
+  before(:all) do
+    User.destroy_all
+    @user1 = User.create!(:username              => 'lover1',
+                          :email                 => "lover1@domain.tld",
+                          :password              => 'password',
+                          :password_confirmation => 'password')
+    @user2 = User.create!(:username              => 'lover2',
+                          :email                 => "lover2@domain.tld",
+                          :password              => 'password',
+                          :password_confirmation => 'password')
+  end
+
   it "should have a username attribute" do
     u = User.new
     u.attributes.should have_key("username")
@@ -19,6 +31,36 @@ describe User do
   it "should have a password= method" do
     u = User.new
     u.should respond_to(:password=)
+  end
+
+  context "in a couple" do
+
+    it "should have a couple method" do
+      u = User.new
+      u.should respond_to(:couple)
+    end
+
+    it "should belongs to a couple" do
+      couple = Couple.create!(:users => [@user1, @user2])
+      @user1.couple.should == couple 
+    end
+           
+  end
+
+  context "with expenses" do
+    
+    it "should have an expenses method" do
+      u = User.new
+      u.should respond_to(:expenses)
+    end
+
+    it "should have many expenses" do
+      expense = Expense.create!(:user => @user1, :amount => 10, :label => "XXX", :spent_on => 2.days.ago)
+      @user1.expenses.should be_kind_of(Array)
+      @user1.expenses.first.should be_kind_of(Expense)
+      @user1.expenses.first.amount.should == 10
+    end
+  
   end
 
 end
