@@ -6,13 +6,16 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-['guillaume', 'laetitia'].each do |name|
-  User.create!(:username              => name,
-               :email                 => "#{name}@domain.tld",
-               :password              => "#{name} 1",
-               :password_confirmation => "#{name} 1"
-  )
+User.create!(:username              => 'guillaume',
+             :email                 => "guillaume@bleu04.fr",
+             :password              => "mot_de_passe",
+             :password_confirmation => "mot_de_passe"
+)
+User.create!(:username              => 'laetitia',
+             :email                 => "laetitia@bleu04.fr",
+             :password              => "petit conan",
+             :password_confirmation => "petit conan"
+)
 
-end
 
 Couple.create!(:users => [User.find_by_username('guillaume'), User.find_by_username('laetitia')])
