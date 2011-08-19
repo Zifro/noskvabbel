@@ -6,5 +6,6 @@ class Expense < ActiveRecord::Base
   validates :amount, :presence => true,
                      :numericality => { :greater_than_or_equal_to => 0.01 }
   
+  attr_accessible :label, :amount, :spent_on
   
 end

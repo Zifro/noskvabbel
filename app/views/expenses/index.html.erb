@@ -1,5 +1,5 @@
-<% if flash[:notice ]%>
-	<p id="flash"><%= flash[:notice]%></p>
+<% if flash[:notice]%>
+	<p id="flash"><%= flash[:notice] %></p>
 <% end %>
 
 <p>List of expenses</p>
@@ -18,6 +18,15 @@
 		<td><%= number_to_currency(exp.amount) %></td>
 		<td><%= exp.spent_on %></td>
 		<td><%= exp.user.username %></td>
+	</tr>
 	<% end %>
-	
+<% else %>
+	No expenses yet, why not <%= link_to "create a new one", new_expense_path %> ?
 <% end %>
+
+<div id="actions">
+	<p>Actions</p>
+	<ul>
+		<li><%= link_to "Record a new expense", new_expense_path %></li>
+	</ul>
+</div>
