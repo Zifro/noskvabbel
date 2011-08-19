@@ -1,10 +1,10 @@
-<% if flash[:notice ]%>
-	<p id="flash"><%= flash[:notice]%></p>
+<% if flash[:notice] %>
+	<p id="flash"><%= flash[:notice] %></p>
 <% end %>
 
 <h3>Login</h3>
 
-<% form_for(@user_session) do |f| %>
+<%= form_for(@user_session) do |f| %>
 	<% if @user_session.errors.any? %>
 	<p id="errors">
 		The following errors prevented you from login in the application
