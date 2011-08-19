@@ -12,4 +12,7 @@
                :password              => "#{name} 1",
                :password_confirmation => "#{name} 1"
   )
+
 end
+
+Couple.create!(:users => [User.find_by_username('guillaume'), User.find_by_username('laetitia')])
