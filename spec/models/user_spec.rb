@@ -55,7 +55,9 @@ describe User do
     end
 
     it "should have many expenses" do
-      expense = Expense.create!(:user => @user1, :amount => 10, :label => "XXX", :spent_on => 2.days.ago)
+      expense = Expense.new(:amount => 10, :label => "XXX", :spent_on => 2.days.ago)
+      expense.user = @user1 # due to attr_accessible not listing :user
+      expense.save!
       @user1.expenses.should be_kind_of(Array)
       @user1.expenses.first.should be_kind_of(Expense)
       @user1.expenses.first.amount.should == 10

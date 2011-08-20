@@ -12,7 +12,9 @@ describe Expense do
   end
   
   before(:each) do
-    @valid_expense = Expense.create!(:amount => 50, :label => "grocery", :spent_on => 2.days.ago, :user => User.first)
+    @valid_expense = Expense.new(:amount => 50, :label => "grocery", :spent_on => 2.days.ago)
+    @valid_expense.user = User.first # due to attr_accessible not listing :user
+    @valid_expense.save!
   end
   
   it "should have an amount attribute" do
@@ -38,7 +40,8 @@ describe Expense do
 
   it "should belongs to a user" do
     user = User.first
-    e = Expense.create!(:amount => 50, :label => "grocery", :spent_on => 2.days.ago, :user => user)
+    e = Expense.new(:amount => 50, :label => "grocery", :spent_on => 2.days.ago)
+    e.user = user # due to attr_accessible not listing :user
     e.user.should == user  
   end
 
