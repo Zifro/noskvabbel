@@ -15,7 +15,11 @@
 		<div id="content">
 
 			<h1 id="application">N&oslash;skvabbel</h1>
-			<h3 id="tagline">&nbsp;- Sharing expenses in a couple should be easy</h3>
+			<% if current_user %>
+				<h3><%= greet_message_for(current_user) %>
+			<% else %>
+				<h3 id="tagline">&nbsp;- Sharing expenses in a couple should be easy</h3>
+			<% end %>
 			<div id="account">
 				<%= link_to 'Logout', logout_path %>
 			</div>

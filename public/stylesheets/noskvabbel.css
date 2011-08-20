@@ -5,6 +5,14 @@ body {
 	margin: 0px;
 }
 
+a {
+	color: #EB1C9B;
+	text-decoration: none;
+}
+
+a:visited {
+}
+
 p#flash {
 	background-color: #9FFF80;
 	opacity: 0.9;
