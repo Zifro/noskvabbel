@@ -1,9 +1,18 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
-  before_filter :get_user_from_session
+  before_filter :get_user_from_session, :verify_the_user_is_logged_in
 
   helper_method :current_user
+
+
+  protected
+  
+  def verify_the_user_is_logged_in
+    if @user_session.new_record?
+      redirect_to login_path, :notice => "Please login first"
+    end
+  end
 
   private
 

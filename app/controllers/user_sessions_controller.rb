@@ -1,5 +1,7 @@
 class UserSessionsController < ApplicationController
 
+  skip_before_filter :verify_the_user_is_logged_in
+
   def new
     @user_session = UserSession.new
   end

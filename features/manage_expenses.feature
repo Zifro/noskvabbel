@@ -3,8 +3,19 @@ Feature: A user manages the expenses
   As a user
   I want to display the expenses recorded, create new ones, update and delete existing ones
 
+  Scenario: Browsing to the expenses page when not logged in
+    Given I'm not logged in
+    When I go to the expenses page
+    Then I should be on the login page
+		And I should see "Please login first"
+		
+	Scenario: Browsing to the expenses page when not in couple
+    Given I am logged in as zifro
+    When I go to the expenses page
+    Then I should be on the login page
+		And I should see "not in couple"
 
-  Scenario: Browsing to the expenses page
+  Scenario: Browsing to the expenses page when logged in
     Given I am logged in as zifro
 		And user zifro is in couple
     When I go to the expenses page
