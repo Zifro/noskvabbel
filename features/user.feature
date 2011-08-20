@@ -3,7 +3,6 @@ Feature: A user performs basic actions with his or her account
   As a user
   I want to log in and log out
 
-
   Scenario: Log in
     Given I have an account with credentials zifro/pazzword
     When I go to the login page
@@ -12,9 +11,17 @@ Feature: A user performs basic actions with his or her account
     And I press "Login"
     Then I should see "Successfully logged in"
 
-
 	Scenario: Log out
   	Given I am logged in as zifro
     When I go to the home page
     And I follow "Logout"
     Then I should see "Login"
+
+	Scenario: Logout link is not displayed when not logged in
+		Given I go to the login page
+		Then I should not see "Logout"
+
+	Scenario: Logout link is displayed when logged in
+		Given I am logged in as zifro
+    When I go to the home page
+		Then I should see "Logout"

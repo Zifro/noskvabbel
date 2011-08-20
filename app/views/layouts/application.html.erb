@@ -12,19 +12,36 @@
 			<p id="flash" title="click to close" onclick="this.shrink();"><%= flash[:notice] %></p>
 		<% end %>
 		
-		<div id="content">
+		<div id="container">
 
-			<h1 id="application">N&oslash;skvabbel</h1>
-			<% if current_user %>
-				<h3><%= greet_message_for(current_user) %>
-			<% else %>
-				<h3 id="tagline">&nbsp;- Sharing expenses in a couple should be easy</h3>
-			<% end %>
-			<div id="account">
-				<%= link_to 'Logout', logout_path %>
+			<div id="header">
+
+				<h1 id="application">N&oslash;skvabbel</h1>
+				
+				<h3>&nbsp;- 
+				<% if current_user %>
+					Hi <span class="male"> <%= current_user.username %></span>!
+					<% if current_user.couple %>
+						You're in couple with <span class="female"><%= other_mate_in_couple_with(current_user).username %></span>.
+					<% else %>
+      			Not in couple yet? Don't worry.
+					<% end %>
+				<% else %>
+					Sharing expenses in a couple should be easy
+				<% end %>
+				</h3>
+				
+				<% if current_user %>
+					<div id="account">
+						<%= link_to 'Logout', logout_path %>
+					</div>
+				<% end %>
+			
 			</div>
 			
-			<%= yield %>
+			<div id="content">
+				<%= yield %>
+			</div>
 
 		</div>
 	

@@ -1,7 +1,10 @@
-<p>List of expenses</p>
+<ul id="title_and_actions">
+	<li id="title">List of expenses - </li>
+	<li><%= link_to "Record a new expense", new_expense_path %></li>
+</ul>
 
 <% if @expenses.any? %>
-<table>
+<table id="expenses">
 	<tr>
 		<th>What</th>
 		<th>How much</th>
@@ -19,10 +22,3 @@
 <% else %>
 	No expenses yet, why not <%= link_to "create a new one", new_expense_path %> ?
 <% end %>
-
-<div id="actions">
-	<p>Actions</p>
-	<ul>
-		<li><%= link_to "Record a new expense", new_expense_path %></li>
-	</ul>
-</div>

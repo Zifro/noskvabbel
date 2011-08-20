@@ -7,7 +7,6 @@ body {
 
 a {
 	color: #EB1C9B;
-	text-decoration: none;
 }
 
 a:visited {
@@ -29,7 +28,7 @@ p#flash {
 	font-size: smaller;
 }
 
-div#content {
+div#container {
 	background-color: white;
 	border: 2px solid black;
 	-moz-border-radius: 5px;
@@ -42,25 +41,60 @@ div#content {
 	margin-left: 5%;
 }
 
-h1#application {
+div#header {
+	padding-bottom: 1%;
+	border-bottom: 2px solid #72A5ED;
+}
+
+div#header h1#application {
 	display: inline;
 }
 
-h3#tagline {
+div#header h3 {
 	display: inline;
-	color: #666666;
+	color: #666;
+}
+
+span.male {
+	color: #72A5ED;
+}
+
+span.female {
+	color: #EB1C9B;
 }
 
 div#account {
-	background-color: #FCF5BD;
 	float: right;
-	border: 2px solid black;
+	border: 2px solid #bbb;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	margin-right: 5%;
 	padding: 1%;
 }
 
+ul#title_and_actions {
+	padding-left: 0px;
+}
+
+ul#title_and_actions li {
+	font-size: 120%;
+	list-style-type: none;
+	display: inline;
+}
+
+ul#title_and_actions li#title {
+	font-weight: bold;
+}
+
+form {
+	background-color: #FCF5BD;
+	border: 2px solid black;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 1%;
+}
+
+form label {
+}
 
 div#errors {
 	background-color: #FF919C;
@@ -74,4 +108,14 @@ div#errors {
 
 div#errors a.close {
 	color: red;
+}
+
+/* style specific to the expenses */
+
+table#expenses {
+	
+}
+
+table#expenses tr {
+	
 }
