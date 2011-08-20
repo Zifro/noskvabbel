@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Noskvabbel</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
+	<head>
+  	<title>N&oslash;skvabbel</title>
+	  <%= stylesheet_link_tag :all %>
+	  <%= javascript_include_tag :defaults %>
+	  <%= csrf_meta_tag %>
+	</head>
+	<body>
+		
+		<% if flash[:notice] %>
+			<p id="flash" title="click to close" onclick="this.shrink();"><%= flash[:notice] %></p>
+		<% end %>
+		
+		<div id="content">
 
-	<h1>Noskvabbel</h1>
+			<h1 id="application">N&oslash;skvabbel</h1>
+			<h3 id="tagline">&nbsp;- Sharing expenses in a couple should be easy</h3>
+			<div id="account">
+				<%= link_to 'Logout', logout_path %>
+			</div>
+			
+			<%= yield %>
+
+		</div>
 	
-	<%= link_to 'Logout', logout_path %>
-
-<%= yield %>
-
-</body>
+	</body>
 </html>

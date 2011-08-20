@@ -1,19 +1,16 @@
-<% if flash[:notice] %>
-	<p id="flash"><%= flash[:notice] %></p>
-<% end %>
-
 <h3>Login</h3>
 
 <%= form_for(@user_session) do |f| %>
 	<% if @user_session.errors.any? %>
-	<p id="errors">
+	<div id="errors">
 		The following errors prevented you from login in the application
 		<ul>
 			<% @user_session.errors.full_messages.each do |msg| %>
 				<li><%= msg %></li>
 			<% end %>
 		</ul>
-	</p>
+		<a href="#" class="close" alt="close" onclick="$('errors').fade(); return false;">close</a>
+	</div>
 	<% end %>
 
   <%= f.label :username %> <%= f.text_field :username %>
