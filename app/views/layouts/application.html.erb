@@ -20,9 +20,9 @@
 				
 				<h3>&nbsp;- 
 				<% if current_user %>
-					Hi <span class="male"> <%= current_user.username %></span>!
+					Hi <span class="<%= gender(current_user) %>"> <%= current_user.username %></span>!
 					<% if current_user.couple %>
-						You're in couple with <span class="female"><%= other_mate_in_couple_with(current_user).username %></span>.
+						You're in couple with <span class="<%= gender(other_mate_in_couple_with(current_user)) %>"><%= other_mate_in_couple_with(current_user).username %></span>.
 					<% else %>
       			Not in couple yet? Don't worry.
 					<% end %>

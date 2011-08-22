@@ -55,12 +55,16 @@ div#header h3 {
 	color: #666;
 }
 
-span.male {
+.male {
 	color: #72A5ED;
 }
 
-span.female {
+.female {
 	color: #EB1C9B;
+}
+
+.gender {
+	color: #bbb;
 }
 
 div#account {
@@ -87,7 +91,7 @@ ul#title_and_actions li#title {
 
 form {
 	background-color: #FCF5BD;
-	border: 2px solid black;
+	border: 2px solid #FFC342;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	padding: 1%;

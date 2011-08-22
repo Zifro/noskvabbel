@@ -6,10 +6,12 @@ describe User do
     User.destroy_all
     @user1 = User.create!(:username              => 'lover1',
                           :email                 => "lover1@domain.tld",
+                          :gender                => 'F',
                           :password              => 'password',
                           :password_confirmation => 'password')
     @user2 = User.create!(:username              => 'lover2',
                           :email                 => "lover2@domain.tld",
+                          :gender                => 'M',
                           :password              => 'password',
                           :password_confirmation => 'password')
   end
@@ -63,6 +65,28 @@ describe User do
       @user1.expenses.first.amount.should == 10
     end
   
+  end
+
+  context "as a gender kind" do
+
+    it "should have a gender attribute" do
+      u = User.new
+      u.attributes.should have_key("gender")
+      u.should respond_to(:gender)
+      u.should respond_to(:gender=)
+    end
+
+    it "should only accept 'M' or 'F' as gender" do
+      u = User.first
+      u.gender = 'M'
+      u.should be_valid
+      u.gender = 'F'
+      u.should be_valid
+      u.gender = 'X'
+      u.should_not be_valid
+    end
+
+
   end
 
 end

@@ -6,4 +6,17 @@ module ApplicationHelper
     (couple.users - [user]).first
   end
 
+
+  # Returns the CSS class corresponding to the gender of the user
+  def gender(user)
+    case user.gender
+    when 'F'
+      'female'
+    when 'M'
+      'male'
+    else
+      'gender'
+    end
+  end
+
 end
