@@ -55,15 +55,15 @@ div#header h3 {
 	color: #666;
 }
 
-.male {
+span.male {
 	color: #72A5ED;
 }
 
-.female {
+span.female {
 	color: #EB1C9B;
 }
 
-.gender {
+span.gender {
 	color: #bbb;
 }
 
@@ -117,9 +117,21 @@ div#errors a.close {
 /* style specific to the expenses */
 
 table#expenses {
-	
+	width: 100%;
 }
 
 table#expenses tr {
 	
+}
+
+tr.male {
+	background-color: #72A5ED;
+}
+
+tr.female {
+	background-color: #EB1C9B;
+}
+
+tr.gender {
+	background-color: #bbb;
 }

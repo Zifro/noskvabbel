@@ -22,6 +22,21 @@ class ExpensesController < ApplicationController
       render new_expense_path(@expense)
     end
   end
+
+  # Displays a form for the user to update the expense passed as parameter
+  def edit
+    @expense = Expense.find(params[:id])
+  end
+  
+  # Updates an expenses from what the user has put into params[:expenses]
+  def update
+    @expense = Expense.find(params[:id])
+    if @expense.update_attributes(params[:expense])
+      redirect_to(expenses_path, :notice => 'Expense successfully updated')
+    else
+      render edit_expense_path(@expense)
+    end
+  end
   
   protected
   

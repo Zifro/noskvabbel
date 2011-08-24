@@ -10,7 +10,7 @@ describe ExpensesController do
     @ec.should respond_to(:index)
   end
 
-  it "should have an new action" do
+  it "should have a new action" do
     @ec.should respond_to(:new)
   end
 
@@ -24,6 +24,22 @@ describe ExpensesController do
       pending
     end
     
+  end
+  
+  it "should have an edit action" do
+    @ec.should respond_to(:edit)
+  end
+  
+  context "the update action" do
+
+    it "should exist" do
+      @ec.should respond_to(:update)
+    end
+    
+    it "should update an expense from params[:expense]" do
+      pending
+    end
+
   end
 
 end

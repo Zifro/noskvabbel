@@ -34,10 +34,10 @@ Feature: A user manages the expenses
 	  When I go to the expenses page
 	  Then I should see the following expenses:
 		| label      | amount | spent_on    |
-		| Grocery    | 50.50  | 2011-08-19  |
-		| Restaurant | 63.20  | 2011-08-18  |
-		| Grocery    | 10.60  | 2011-08-17  |
-		| DVD        | 14.90  | 2011-08-16  |
+		| Grocery    | 50,50  | 2011-08-19  |
+		| Restaurant | 63,20  | 2011-08-18  |
+		| Grocery    | 10,60  | 2011-08-17  |
+		| DVD        | 14,90  | 2011-08-16  |
 	
 	Scenario: Browsing to the new expense page
 		Given I am logged in as zifro
@@ -59,4 +59,46 @@ Feature: A user manages the expenses
     And I press "Record"
     Then I should see the following expense:
 		| label                            | amount | spent_on    |
-		| Bought soft drinks for the party | 99.60  | 2011-08-19  |
+		| Bought soft drinks for the party | 99,60  | 2011-08-19  |
+	
+	Scenario: Display the embedded action links
+		Given I am logged in as zifro
+		And user zifro is in couple
+		And user zifro has recorded following expenses:
+		| label      | amount | spent_on    |
+		| Grocery    | 50.50  | 2011-08-19  |
+		When I go to the expenses page
+		Then I should see "Edit"
+		And I should see "Delete"
+	
+	Scenario: Browsing to the edit expense page
+		Given I am logged in as zifro
+		And user zifro is in couple
+		And user zifro has recorded following expenses:
+		| label      | amount | spent_on    |
+		| Grocery    | 50.50  | 2011-08-19  |
+		When I go to the expenses page
+		And I follow "Edit"
+#		Then I should be on the edit expense page
+		And I should see "Please edit the following expense details at your will, then press Update"
+	
+	Scenario: Updating an expense
+		Given I am logged in as zifro
+		And user zifro is in couple
+		And user zifro has recorded following expenses:
+		| label      | amount | spent_on    |
+		| Grocery    | 50.50  | 2011-08-19  |
+		When I go to the expenses page
+		And I follow "Edit"
+		And I fill in "expense[label]" with "Aldi"
+		And I fill in "expense[amount]" with "49.90"
+		And I fill in "expense[spent_on]" with "2011-08-20"
+		And I press "Update"
+		Then I should be on the expenses page
+		And I should see the following expense:
+		| label   | amount | spent_on    |
+		| Aldi    | 49,90  | 2011-08-20  |
+		And I should see "Expense successfully updated"
+
+	Scenario: Deleting an expense
+	
