@@ -42,4 +42,17 @@ describe ExpensesController do
 
   end
 
+
+  context "the destroy action" do
+
+    it "should exist" do
+      @ec.should respond_to(:destroy)
+    end
+    
+    it "should destroy an expense from params[:expense]" do
+      pending
+    end
+
+  end
+
 end

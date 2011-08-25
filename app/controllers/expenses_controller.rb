@@ -38,6 +38,16 @@ class ExpensesController < ApplicationController
     end
   end
   
+  # Destroys an expense from what the user has passed as parameter
+  def destroy
+    @expense = Expense.find(params[:id])
+    if @expense.destroy
+      redirect_to(expenses_path, :notice => 'Expense successfully deleted')
+    else
+      redirect_to(expenses_path, :error => 'Expense could not be deleted')
+    end
+  end
+  
   protected
   
   def verify_the_user_is_in_couple

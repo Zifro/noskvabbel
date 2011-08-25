@@ -101,4 +101,12 @@ Feature: A user manages the expenses
 		And I should see "Expense successfully updated"
 
 	Scenario: Deleting an expense
+		Given I am logged in as zifro
+		And user zifro is in couple
+		And user zifro has recorded following expenses:
+		| label      | amount | spent_on    |
+		| Grocery    | 50.50  | 2011-08-19  |
+		When I go to the expenses page
+		And I follow "Delete"
+		Then I should see "Expense successfully deleted"
 	
