@@ -14,45 +14,20 @@ describe ExpensesController do
     @ec.should respond_to(:new)
   end
 
-  context "the create action" do
-    
-    it "should exist" do
-      @ec.should respond_to(:create)
-    end
-    
-    it "should create a new expense from params[:expense]" do
-      pending
-    end
-    
+  it "should have a create action" do
+    @ec.should respond_to(:create)
   end
   
   it "should have an edit action" do
     @ec.should respond_to(:edit)
   end
-  
-  context "the update action" do
 
-    it "should exist" do
-      @ec.should respond_to(:update)
-    end
-    
-    it "should update an expense from params[:expense]" do
-      pending
-    end
-
+  it "should have an update action" do
+    @ec.should respond_to(:update)
   end
 
-
-  context "the destroy action" do
-
-    it "should exist" do
-      @ec.should respond_to(:destroy)
-    end
-    
-    it "should destroy an expense from params[:expense]" do
-      pending
-    end
-
+  it "should have a destroy action" do
+    @ec.should respond_to(:destroy)
   end
 
 end
