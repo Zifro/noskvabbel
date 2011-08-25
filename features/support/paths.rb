@@ -16,6 +16,10 @@ module NavigationHelpers
 
     when /^the logout\s+page$/
       '/logout'
+      
+    when /^the account\s+page$/
+      '/account'
+      
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -19,6 +19,10 @@ Noskvabbel::Application.routes.draw do
   resources :user_sessions
 
   resources :expenses
+  
+  resources :users
+  
+  match 'account' => 'users#edit', :as => :account
 
   # Sample resource route with options:
   #   resources :products do

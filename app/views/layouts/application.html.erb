@@ -18,23 +18,20 @@
 
 				<h1 id="application">N&oslash;skvabbel</h1>
 				
-				<h3>&nbsp;- 
 				<% if current_user %>
-					Hi <span class="<%= gender(current_user) %>"> <%= current_user.username %></span>!
+					<h3>&nbsp;-&nbsp;Hi <span class="<%= gender(current_user) %>"> <%= current_user.username %></span>!
 					<% if current_user.couple %>
 						You're in couple with <span class="<%= gender(other_mate_in_couple_with(current_user)) %>"><%= other_mate_in_couple_with(current_user).username %></span>.
 					<% else %>
       			Not in couple yet? Don't worry.
 					<% end %>
-				<% else %>
-					Sharing expenses in a couple should be easy
-				<% end %>
-				</h3>
-				
-				<% if current_user %>
+					</h3>
 					<div id="account">
+						<%= link_to 'Account', account_path %> |
 						<%= link_to 'Logout', logout_path %>
 					</div>
+				<% else %>
+					<h3>&nbsp;-&nbsp;Sharing expenses in a couple should be easy</h3>
 				<% end %>
 			
 			</div>

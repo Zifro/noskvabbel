@@ -1,0 +1,26 @@
+<p>Here are your account information</p>
+<br />
+<% if @user.errors.any? %>
+<p id="errors">
+	The following errors prevented you from updating your account
+	<ul>
+		<% @user.errors.full_messages.each do |msg| %>
+			<li><%= msg %></li>
+		<% end %>
+	</ul>
+</p>
+<% end %>
+<%= form_for(@user) do |f| %>
+
+  <%= f.label :username %> <%= f.text_field :username %>
+  <br/>
+  <%= f.label :password %> <%= f.text_field :password %>
+  <br/>
+  <%= f.label :password_confirmation %> <%= f.text_field :password_confirmation %>
+  <br/>
+  <%= f.label :M_gender, "I'm a male" %> <%= f.radio_button :gender, "M" %>
+	<%= f.label :F_gender, "I'm a female" %> <%= f.radio_button :gender, "F" %>
+  <br/>
+  <%= f.submit 'Update' %>
+  
+<% end %>
