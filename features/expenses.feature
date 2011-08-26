@@ -60,6 +60,18 @@ Feature: A user manages the expenses
     Then I should see the following expense:
 		| label                            | amount | spent_on    |
 		| Bought soft drinks for the party | 99,60  | 2011-08-19  |
+		
+	Scenario: Cancelling the creation of a new expense
+		Given I am logged in as zifro
+		And user zifro is in couple
+		When I go to the new expense page
+		And I fill in "expense[label]" with "Bought soft drinks for the party"
+		And I fill in "expense[amount]" with "99.60"
+		And I fill in "expense[spent_on]" with "2011-08-19"
+	  And I follow "cancel"
+	  Then I should not see the following expense:
+		| label                            | amount | spent_on    |
+		| Bought soft drinks for the party | 99,60  | 2011-08-19  |
 	
 	Scenario: Display the embedded action links
 		Given I am logged in as zifro
@@ -99,6 +111,23 @@ Feature: A user manages the expenses
 		| label   | amount | spent_on    |
 		| Aldi    | 49,90  | 2011-08-20  |
 		And I should see "Expense successfully updated"
+
+	Scenario: Cancelling the update of an expense
+		Given I am logged in as zifro
+		And user zifro is in couple
+		And user zifro has recorded following expenses:
+		| label      | amount | spent_on    |
+		| Grocery    | 50.50  | 2011-08-19  |
+		When I go to the expenses page
+		And I follow "Edit"
+		And I fill in "expense[label]" with "Aldi"
+		And I fill in "expense[amount]" with "49.90"
+		And I fill in "expense[spent_on]" with "2011-08-20"
+		And I follow "cancel"
+		Then I should be on the expenses page
+		And I should see the following expense:
+		| label      | amount | spent_on    |
+		| Grocery    | 50,50  | 2011-08-19  |
 
 	Scenario: Deleting an expense
 		Given I am logged in as zifro
