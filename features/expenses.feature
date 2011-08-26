@@ -139,3 +139,15 @@ Feature: A user manages the expenses
 		And I follow "Delete"
 		Then I should see "Expense successfully deleted"
 	
+	Scenario: Displaying the balance
+		Given I am logged in as zifro
+		And user zifro is in couple with gincy
+		And user zifro has recorded following expenses:
+		| label      | amount | spent_on    |
+		| Grocery    | 50     | 2011-08-10  |
+		And user gincy has recorded following expenses:
+		| label      | amount | spent_on    |
+		| Grocery    | 40     | 2011-08-20  |
+		When I go to the expenses page
+		Then I should see "Balance: zifro (50,00) / gincy (40,00)"
+	

@@ -1,5 +1,7 @@
 class Expense < ActiveRecord::Base
   
+  default_scope :order => 'spent_on DESC, id desc'
+  
   belongs_to :user
   
   validates :user, :label, :spent_on, :presence => true

@@ -3,6 +3,8 @@
 	<li><%= link_to "Record a new expense", new_expense_path %></li>
 </ul>
 
+Balance: <%= display_balance(current_user.couple)%>
+
 <% if @expenses.any? %>
 <table id="expenses">
 	<tr>
@@ -18,7 +20,7 @@
 		<td><%= number_to_currency(exp.amount, :unit => '€', :separator => ',', :delimiter => ' ') %></td>
 		<td><%= exp.spent_on %></td>
 		<td><%= exp.user.username %></td>
-		<td><%= link_to 'Edit', edit_expense_path(exp) %> or <%= link_to 'Delete', exp, :confirm => 'Are you sure?', :method => :delete %>		</td>
+		<td><%= link_to 'Edit', edit_expense_path(exp) %> or <%= link_to 'Delete', exp, :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>
 	<% end %>
 <% else %>
