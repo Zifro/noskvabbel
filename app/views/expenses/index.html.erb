@@ -3,22 +3,30 @@
 	<li><%= link_to "Record a new expense", new_expense_path %></li>
 </ul>
 
-Balance: <%= display_balance(current_user.couple)%>
-
 <% if @expenses.any? %>
 <table id="expenses">
 	<tr>
+		<th>When</th>		
 		<th>What</th>
 		<th>How much</th>
-		<th>When</th>
 		<th>Who</th>
 		<th>Actions</th>
 	</tr>
+	<tr class="balance">
+		<td rowspan="2"><%= Date.today %></td>
+		<td rowspan="2">Balance</td>
+		<td><%= @users.first[:total] %></td>
+		<td><%= @users.first[:username] %></td>
+	</tr>
+	<tr class="balance">
+		<td><%= @users.second[:total] %></td>
+		<td><%= @users.second[:username] %></td>
+	</tr>
 	<% @expenses.each do |exp| %>
 	<tr class="<%= gender(exp.user) %>">
-		<td><%= exp.label %></td>
-		<td><%= number_to_currency(exp.amount, :unit => '€', :separator => ',', :delimiter => ' ') %></td>
 		<td><%= exp.spent_on %></td>
+		<td><%= exp.label %></td>
+		<td><%= number_to_currency(exp.amount, :unit => '€ ', :separator => ',', :delimiter => ' ') %></td>
 		<td><%= exp.user.username %></td>
 		<td><%= link_to 'Edit', edit_expense_path(exp) %> or <%= link_to 'Delete', exp, :confirm => 'Are you sure?', :method => :delete %></td>
 	</tr>

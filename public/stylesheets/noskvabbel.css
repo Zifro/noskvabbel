@@ -9,9 +9,6 @@ a {
 	color: #EB1C9B;
 }
 
-a:visited {
-}
-
 p#flash {
 	background-color: #9FFF80;
 	opacity: 0.9;
@@ -120,8 +117,8 @@ table#expenses {
 	width: 100%;
 }
 
-table#expenses tr {
-	
+table#expenses tr td {
+	text-align: center;
 }
 
 tr.male {

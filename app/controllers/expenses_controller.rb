@@ -1,10 +1,18 @@
+# coding: utf-8
+
 class ExpensesController < ApplicationController
+  
+  include ActionView::Helpers::NumberHelper
 
   before_filter :verify_the_user_is_in_couple
 
   # Lists the expenses recorded for the couple of the user
   def index
     @expenses = current_user.couple.expenses
+    @users = current_user.couple.users.collect do |user|
+        total = user.expenses.inject(0) { |total, e| total += e.amount }
+        { :username => user.username, :total => number_to_currency(total, :unit => '€ ', :separator => ',', :delimiter => ' ') }
+    end      
   end
   
   # Display a form for the user to create a new expense

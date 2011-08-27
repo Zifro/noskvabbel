@@ -149,5 +149,6 @@ Feature: A user manages the expenses
 		| label      | amount | spent_on    |
 		| Grocery    | 40     | 2011-08-20  |
 		When I go to the expenses page
-		Then I should see "Balance: zifro (50,00) / gincy (40,00)"
+		Then I should see "50,00 zifro"
+		And I should see "40,00 gincy"
 	
