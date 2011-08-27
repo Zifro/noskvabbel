@@ -1,0 +1,5 @@
+if @expense.destroyed?
+  page.visual_effect :fade, "expense_#{@expense.id}"
+else
+  page.alert 'Expense could not be deleted'
+end

@@ -48,11 +48,15 @@ class ExpensesController < ApplicationController
   
   # Destroys an expense from what the user has passed as parameter
   def destroy
-    @expense = Expense.find(params[:id])
-    if @expense.destroy
-      redirect_to(expenses_path, :notice => 'Expense successfully deleted')
-    else
-      redirect_to(expenses_path, :error => 'Expense could not be deleted')
+    respond_to do |format|
+      @expense = Expense.find(params[:id])
+      if @expense.destroy
+        format.html { redirect_to(expenses_path, :notice => 'Expense successfully deleted') }
+        format.js
+      else
+        format.html { redirect_to(expenses_path, :error => 'Expense could not be deleted') }
+        format.js
+      end
     end
   end
   

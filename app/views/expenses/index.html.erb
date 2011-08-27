@@ -23,12 +23,12 @@
 		<td><%= @users.second[:username] %></td>
 	</tr>
 	<% @expenses.each do |exp| %>
-	<tr class="<%= gender(exp.user) %>">
+	<tr id="expense_<%= exp.id %>" class="<%= gender(exp.user) %>">
 		<td><%= exp.spent_on %></td>
 		<td><%= exp.label %></td>
 		<td><%= number_to_currency(exp.amount, :unit => '€ ', :separator => ',', :delimiter => ' ') %></td>
 		<td><%= exp.user.username %></td>
-		<td><%= link_to 'Edit', edit_expense_path(exp) %> or <%= link_to 'Delete', exp, :confirm => 'Are you sure?', :method => :delete %></td>
+		<td><%= link_to 'Edit', edit_expense_path(exp) %> or <%= link_to 'Delete', exp, :confirm => 'Are you sure?', :remote => true, :method => :delete %></td>
 	</tr>
 	<% end %>
 <% else %>
