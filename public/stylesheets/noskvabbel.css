@@ -125,11 +125,11 @@ table#expenses tr {
 }
 
 tr.male {
-	background-color: #72A5ED;
+	background-color: #A3E3FF;
 }
 
 tr.female {
-	background-color: #EB1C9B;
+	background-color: #FFA3BA;
 }
 
 tr.gender {
