@@ -16,6 +16,8 @@
   <br/>
   <%= f.label :amount %> <%= f.text_field :amount %>
   <br/>
+	<%= f.label :who %> <%= f.select :user_id, options_for_select(current_user) %>
+	<br/>
   <%= f.label :date %> <%= f.text_field :spent_on %>
   <br/>
   <%= f.submit 'Update' %> or <%= link_to 'cancel', expenses_path %>

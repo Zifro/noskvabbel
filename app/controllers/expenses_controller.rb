@@ -17,13 +17,13 @@ class ExpensesController < ApplicationController
   
   # Display a form for the user to create a new expense
   def new
-    @expense = Expense.new
+    @expense = Expense.new(:user => current_user)
   end
   
   # Creates a new expense
   def create
     @expense = Expense.new(params[:expense])
-    @expense.user = current_user
+    @expense.created_by = current_user
     if @expense.save
       redirect_to(expenses_path, :notice => 'Expense successfully recorded')
     else
@@ -42,7 +42,7 @@ class ExpensesController < ApplicationController
     if @expense.update_attributes(params[:expense])
       redirect_to(expenses_path, :notice => 'Expense successfully updated')
     else
-      render edit_expense_path(@expense)
+      render :action => :edit
     end
   end
   
