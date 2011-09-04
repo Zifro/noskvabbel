@@ -20,7 +20,11 @@ module NavigationHelpers
     when /^the account\s+page$/
       '/account'
       
-
+    when /^the edit page for the "([^\/]+)\/(\d+\.\d+)" expense created on (\d{4}-\d{2}-\d{2}) for user (\S+)$/
+      expense = Expense.find(:first, :conditions => { :label => $1, :amount => $2, :spent_on => $3, :user_id => User.find_by_username($4).id })
+      raise "No such expense" unless expense
+      "/expenses/#{expense.id}/edit"
+      
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

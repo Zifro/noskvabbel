@@ -6,7 +6,8 @@ Given /^user (\S+) has recorded following expenses:$/ do |user, table|
       :label    => expense[:label],
       :amount   => expense[:amount],
       :spent_on => expense[:spent_on].to_date,
-      :user     => User.find_by_username(expense[:user])
+      :user     => User.find_by_username(expense[:user]),
+      :created_by => (expense[:created_by] ? User.find_by_username(expense[:created_by]) : User.find_by_username(user))
     )
     exp.created_by = user # due to the attr_accessible
     exp.save!

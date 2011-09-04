@@ -30,4 +30,8 @@ describe ExpensesController do
     @ec.should respond_to(:destroy)
   end
 
+  it "should have a show action" do
+    @ec.should respond_to(:show)
+  end
+
 end

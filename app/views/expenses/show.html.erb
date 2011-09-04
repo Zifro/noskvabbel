@@ -1,0 +1,26 @@
+<p>Details for the selected expense</p>
+<br />
+<table>
+	<tr>
+		<td>Label</td>
+		<td><%= @expense.label %></td>
+	</tr>
+	<tr>
+		<td>Amount</td>
+		<td><%= @expense.amount %></td>
+	</tr>
+	<tr>
+		<td>Who</td>
+		<td><%= @expense.user.username %></td>
+	</tr>
+	<tr>
+		<td>When</td>
+		<td><%= @expense.spent_on %></td>
+	</tr>
+	<tr>
+		<td>Recorded by</td>
+  	<td><%= @expense.created_by.username %></td>
+	</tr>
+<table>
+<br />
+<%= link_to 'Go back to the list of expenses', expenses_path %>

@@ -15,6 +15,12 @@ class ExpensesController < ApplicationController
     end      
   end
   
+  # Displays an expense
+  def show
+    @expense = Expense.find(params[:id])
+    #TODO: add a filter so that only expenses linked to the couple of the user can be displayed
+  end
+  
   # Display a form for the user to create a new expense
   def new
     @expense = Expense.new(:user => current_user)
@@ -34,11 +40,13 @@ class ExpensesController < ApplicationController
   # Displays a form for the user to update the expense passed as parameter
   def edit
     @expense = Expense.find(params[:id])
+    #TODO: add a filter so that only expenses linked to the couple of the user can be displayed
   end
   
   # Updates an expenses from what the user has put into params[:expenses]
   def update
     @expense = Expense.find(params[:id])
+    #TODO: add a filter so that only expenses linked to the couple of the user can be displayed
     if @expense.update_attributes(params[:expense])
       redirect_to(expenses_path, :notice => 'Expense successfully updated')
     else
@@ -50,6 +58,7 @@ class ExpensesController < ApplicationController
   def destroy
     respond_to do |format|
       @expense = Expense.find(params[:id])
+      #TODO: add a filter so that only expenses linked to the couple of the user can be displayed
       if @expense.destroy
         format.html { redirect_to(expenses_path, :notice => 'Expense successfully deleted') }
         format.js

@@ -85,6 +85,16 @@ Feature: A user manages the expenses
 		When I go to the expenses page
 		Then I should see "Edit"
 		And I should see "Delete"
+		And I should see "Details"
+		
+	Scenario: Browsing to the detail expense page
+		Given I am logged in as zifro
+		And user zifro is in couple
+		And user zifro has recorded following expenses:
+		| label   | amount | user  | spent_on   | created_by |
+		| Grocery | 50.50  | zifro | 2011-08-19 | zifro      |
+		When I go to the expenses page
+		And I follow "Details"
 	
 	Scenario: Browsing to the edit expense page
 		Given I am logged in as zifro
@@ -94,7 +104,7 @@ Feature: A user manages the expenses
 		| Grocery | 50.50  | zifro | 2011-08-19 |
 		When I go to the expenses page
 		And I follow "Edit"
-#		Then I should be on the edit expense page
+		Then I should be on the edit page for the "Grocery/50.50" expense created on 2011-08-19 for user zifro
 		And I should see "Please edit the following expense details at your will, then press Update"
 	
 	Scenario: Updating an expense
