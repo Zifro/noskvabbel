@@ -9,6 +9,11 @@ a {
 	color: #EB1C9B;
 }
 
+a.no_color {
+	color: black;
+	text-decoration: none;
+}
+
 p#flash {
 	background-color: #9FFF80;
 	opacity: 0.9;

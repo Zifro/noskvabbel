@@ -16,7 +16,7 @@
 
 			<div id="header">
 
-				<h1 id="application">N&oslash;skvabbel</h1>
+				<h1 id="application"><%= link_to 'N&oslash;skvabbel'.html_safe, '/', :class => 'no_color' %></h1>
 				
 				<% if current_user %>
 					<h3>&nbsp;-&nbsp;Hi <span class="<%= gender(current_user) %>"> <%= current_user.username %></span>!
