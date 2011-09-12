@@ -1,0 +1,4 @@
+<tr id="details_for_expense_<%= @expense.id %>">
+	<td colspan="4">Recorded by <%= @expense.created_by.username %> on <%= @expense.created_at %></td>
+	<td><%= link_to_function 'Close', "$('details_for_#{@expense.id}').href = '#{expense_path(@expense)}'; $('details_for_expense_#{@expense.id}').hide()"%></td>
+</tr>

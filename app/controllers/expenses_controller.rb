@@ -19,6 +19,10 @@ class ExpensesController < ApplicationController
   def show
     @expense = Expense.find(params[:id])
     #TODO: add a filter so that only expenses linked to the couple of the user can be displayed
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
   
   # Display a form for the user to create a new expense

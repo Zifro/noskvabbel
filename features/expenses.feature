@@ -87,7 +87,7 @@ Feature: A user manages the expenses
 		And I should see "Delete"
 		And I should see "Details"
 		
-	Scenario: Browsing to the detail expense page
+	Scenario: Browsing to the details expense page
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
@@ -95,6 +95,9 @@ Feature: A user manages the expenses
 		| Grocery | 50.50  | zifro | 2011-08-19 | zifro      |
 		When I go to the expenses page
 		And I follow "Details"
+		Then I should see "Label"
+		And I should see "Grocery"
+		And I should see "Recorded by zifro"
 	
 	Scenario: Browsing to the edit expense page
 		Given I am logged in as zifro

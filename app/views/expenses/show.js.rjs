@@ -1,0 +1,2 @@
+page.insert_html :after, "expense_#{@expense.id}", :partial => 'details'
+page["details_for_#{@expense.id}"].href = '#'
