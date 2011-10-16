@@ -1,8 +1,8 @@
-<p>Here are your account information</p>
+<p><%= t('.account_information') %></p>
 <br />
 <% if @user.errors.any? %>
 <p id="errors">
-	The following errors prevented you from updating your account
+	<%= t('.the_following_errors___no_update') %>
 	<ul>
 		<% @user.errors.full_messages.each do |msg| %>
 			<li><%= msg %></li>
@@ -12,15 +12,15 @@
 <% end %>
 <%= form_for(@user) do |f| %>
 
-  <%= f.label :username %> <%= f.text_field :username %>
+  <%= f.label :username, t('.username') %> <%= f.text_field :username %>
   <br/>
-  <%= f.label :password %> <%= f.text_field :password %>
+  <%= f.label :password, t('.password') %> <%= f.text_field :password %>
   <br/>
-  <%= f.label :password_confirmation %> <%= f.text_field :password_confirmation %>
+  <%= f.label :password_confirmation, t('.password_confirmation') %> <%= f.text_field :password_confirmation %>
   <br/>
-  <%= f.label :M_gender, "I'm a male" %> <%= f.radio_button :gender, "M" %>
-	<%= f.label :F_gender, "I'm a female" %> <%= f.radio_button :gender, "F" %>
+  <%= f.label :M_gender, t('.male') %> <%= f.radio_button :gender, "M" %>
+	<%= f.label :F_gender, t('.female') %> <%= f.radio_button :gender, "F" %>
   <br/>
-  <%= f.submit 'Update' %>
+  <%= f.submit t('.update') %>
   
 <% end %>

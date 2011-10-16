@@ -1,20 +1,20 @@
 <ul id="title_and_actions">
-	<li id="title">List of expenses - </li>
-	<li><%= link_to "Record a new expense", new_expense_path %></li>
+	<li id="title"><%= t('.list') %> - </li>
+	<li><%= link_to t('.record_new_expense'), new_expense_path %></li>
 </ul>
 
 <% if @expenses.any? %>
 <table id="expenses">
 	<tr>
-		<th>When</th>		
-		<th>What</th>
-		<th>How much</th>
-		<th>Who</th>
-		<th>Actions</th>
+		<th><%= t('.when') %></th>		
+		<th><%= t('.what') %></th>
+		<th><%= t('.how_much') %></th>
+		<th><%= t('.who') %></th>
+		<th><%= t('.actions') %></th>
 	</tr>
 	<tr class="balance">
 		<td rowspan="2"><%= Date.today %></td>
-		<td rowspan="2">Balance</td>
+		<td rowspan="2"><%= t('.balance') %></td>
 		<td><%= @users.first[:total] %></td>
 		<td><%= @users.first[:username] %></td>
 	</tr>
@@ -28,9 +28,13 @@
 		<td><%= exp.label %></td>
 		<td><%= number_to_currency(exp.amount, :unit => '€ ', :separator => ',', :delimiter => ' ') %></td>
 		<td><%= exp.user.username %></td>
-		<td><%= link_to 'Details', expense_path(exp), :remote => true, :id => "details_for_#{exp.id}" %>, <%= link_to 'Edit', edit_expense_path(exp) %> or <%= link_to 'Delete', exp, :confirm => 'Are you sure?', :remote => true, :method => :delete %></td>
+		<td>
+			<%= link_to t('.details'), expense_path(exp), :remote => true, :id => "details_for_#{exp.id}" %>,
+			<%= link_to t('.edit'), edit_expense_path(exp) %> or
+			<%= link_to t('.delete'), exp, :confirm => t('.confirm_delete'), :remote => true, :method => :delete %>
+		</td>
 	</tr>
 	<% end %>
 <% else %>
-	No expenses yet, why not <%= link_to "create a new one", new_expense_path %> ?
+	t('.none_yet') <%= link_to t('.new_one'), new_expense_path %> ?
 <% end %>

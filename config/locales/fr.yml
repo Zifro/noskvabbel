@@ -1,0 +1,84 @@
+fr:
+
+  successfully_logged_in: "Authentification réussie"
+  successfully_logged_out: "Votre session est terminée"
+
+  layouts:
+
+    application:
+
+      hi: "Bonjour"
+      in_couple_with: "Vous êtes en couple avec "
+      not_in_couple_yet: "Pas encore en couple? Pas de souci."
+      account: "Votre compte"
+      logout: "Quitter"
+      tagline: "Partager les dépenses d'un couple devrait être simple"
+
+  user_sessions:
+    
+    new:
+      
+      login: "Authentification"
+      login_button: "S'authentifier"
+      the_following_errors___no_login: "L'authentification a échoué en raison des erreurs suivantes"      
+      username: "Nom d'utilisateur"
+      password: "Mot de passe"
+
+  expenses:
+    
+    index:
+      
+      list: "Liste des dépenses"
+      record_new_expense: "Enregistrer une nouvelle dépense"
+      when: "Date"
+      what: "Objet"
+      how_much: "Montant"
+      who: "Par qui"
+      actions: "Actions"
+      balance: "Balance"
+      details: "Détails"
+      edit: "Éditer"
+      delete: "Supprimer"
+      confirm_delete: "Confirmez-vous la suppression ?"
+      none_yet: "Aucune dépense, pourquoi ne pas"
+      new_one: "en créer une nouvelle"
+
+    details:
+      
+      close: "Fermer"
+    
+    new:
+      
+      provide_info_for_new_expense: "Saisissez les informations ci-dessous pour enregistrer une nouvelle dépense"
+      label: "Intitulé"
+      amount: "Montant"
+      who: "Qui"
+      date: "Date"
+      record_button: "Sauvegarder"
+      or: "ou"
+      cancel: "annuler"
+
+    edit:
+      
+      provide_info_to_update_expense: "Saisissez les informations ci-dessous pour mettre à jour cette dépense"
+      label: "Intitulé"
+      amount: "Montant"
+      who: "Qui"
+      date: "Date"
+      record_button: "Mettre à jour"
+      or: "ou"
+      cancel: "annuler"
+
+  users:
+
+    edit:
+
+      account_information: "Voici les informations de votre compte"
+      the_following_errors___no_update: "La mise à jour a échoué en raison des erreurs suivantes"
+      username: "Nom d'utilisateur"
+      password: "Mot de passe"
+      password_confirmation: "Confirmation du mot de passe"
+      male: "Je suis un homme"
+      female: "Je suis une femme"
+      update: "Mettre à jour"
+      

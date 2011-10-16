@@ -1,11 +1,11 @@
 <ul id="title_and_actions">
-	<li id="title">Login</li>
+	<li id="title"><%= t('.login') %></li>
 </ul>
 
 <%= form_for(@user_session) do |f| %>
 	<% if @user_session.errors.any? %>
 	<div id="errors">
-		The following errors prevented you from login in the application
+		<%= t('.the_following_errors___no_login') %>
 		<ul>
 			<% @user_session.errors.full_messages.each do |msg| %>
 				<li><%= msg %></li>
@@ -15,10 +15,10 @@
 	</div>
 	<% end %>
 
-  <%= f.label :username %> <%= f.text_field :username %>
+  <%= f.label t('.username') %> <%= f.text_field :username %>
   <br/>
-  <%= f.label :password %> <%= f.password_field :password %>
+  <%= f.label t('.password') %> <%= f.password_field :password %>
   <br/>
-  <%= f.submit 'Login' %>
+  <%= f.submit t('.login_button') %>
   
 <% end %>

@@ -2,4 +2,85 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+
+  successfully_logged_in: "Successfully logged in"
+  successfully_logged_out: "Successfully logged out"
+
+  layouts:
+
+    application:
+
+      hi: "Hi"
+      in_couple_with: "You're in couple with"
+      not_in_couple_yet: "Not in couple yet? Don't worry."
+      account: "Account"
+      logout: "Logout"
+      tagline: "Sharing expenses in a couple should be easy"
+
+  user_sessions:
+
+    new:
+
+      login: "Login"
+      login_button: "Login"
+      the_following_errors___no_login: "The following errors prevented you from login in the application"
+      username: "Username"
+      password: "Password"
+      
+  expenses:
+    
+    index:
+      
+      list: "List of expenses"
+      record_new_expense: "Record a new expense"
+      when: "When"
+      what: "What"
+      how_much: "How much"
+      who: "Who"
+      actions: "Actions"
+      balance: "Balance"
+      details: "Details"
+      edit: "Edit"
+      delete: "Delete"
+      confirm_delete: "Are you sure?"
+      none_yet: "No expenses yet, why not"
+      new_one: "create a new one"
+    
+    details:
+      
+      close: "Close"
+            
+    new:
+      
+      provide_info_for_new_expense: "Provide the following information to record a new expense"
+      label: "Label"
+      amount: "Amount"
+      who: "Who"
+      date: "Date"
+      record_button: "Record"
+      or: "or"
+      cancel: "cancel"
+
+    edit:
+
+      provide_info_to_update_expense: "Please edit the following expense details at your will, then press Update"
+      label: "Label"
+      amount: "Amount"
+      who: "Who"
+      date: "Date"
+      record_button: "Update"
+      or: "or"
+      cancel: "cancel"
+      
+  users:
+
+    edit:
+
+      account_information: "Here are your account information"
+      the_following_errors___no_update: "The following errors prevented you from updating your account"
+      username: "Username"
+      password: "Password"
+      password_confirmation: "Password confirmation"
+      male: "I'm a male"
+      female: "I'm a female"
+      update: "Update"

@@ -19,19 +19,19 @@
 				<h1 id="application"><%= link_to 'N&oslash;skvabbel'.html_safe, '/', :class => 'no_color' %></h1>
 				
 				<% if current_user %>
-					<h3>&nbsp;-&nbsp;Hi <span class="<%= gender(current_user) %>"> <%= current_user.username %></span>!
+					<h3>&nbsp;-&nbsp;<%= t('.hi') %><span class="<%= gender(current_user) %>"> <%= current_user.username %></span>!
 					<% if current_user.couple %>
-						You're in couple with <span class="<%= gender(other_mate_in_couple_with(current_user)) %>"><%= other_mate_in_couple_with(current_user).username %></span>.
+						<%= t('.in_couple_with') %> <span class="<%= gender(other_mate_in_couple_with(current_user)) %>"><%= other_mate_in_couple_with(current_user).username %></span>.
 					<% else %>
-      			Not in couple yet? Don't worry.
+      			<%= t('.not_in_couple_yet') %>
 					<% end %>
 					</h3>
 					<div id="account">
-						<%= link_to 'Account', account_path %> |
-						<%= link_to 'Logout', logout_path %>
+						<%= link_to t('.account'), account_path %> |
+						<%= link_to t('.logout'), logout_path %>
 					</div>
 				<% else %>
-					<h3>&nbsp;-&nbsp;Sharing expenses in a couple should be easy</h3>
+					<h3>&nbsp;-&nbsp;<%= t('.tagline') %></h3>
 				<% end %>
 			
 			</div>
