@@ -29,7 +29,7 @@
 		<td><%= number_to_currency(exp.amount, :unit => '€ ', :separator => ',', :delimiter => ' ') %></td>
 		<td><%= exp.user.username %></td>
 		<td>
-			<%= link_to t('.details'), expense_path(exp), :remote => true, :id => "details_for_#{exp.id}" %>,
+			<%= link_to t('.details'), expense_path(exp), remote: true, id: "details_for_#{exp.id}" %>,
 			<%= link_to t('.edit'), edit_expense_path(exp) %> or
 			<%= link_to t('.delete'), exp, :confirm => t('.confirm_delete'), :remote => true, :method => :delete %>
 		</td>
