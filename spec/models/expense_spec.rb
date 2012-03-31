@@ -8,6 +8,10 @@ describe Expense do
                           :email                 => "lover1@domain.tld",
                           :password              => 'password',
                           :password_confirmation => 'password')
+    @user2 = User.create!(:username              => 'lover2',
+                          :email                 => "lover2@domain.tld",
+                          :password              => 'password',
+                          :password_confirmation => 'password')
     Expense.destroy_all
   end
   
@@ -90,6 +94,16 @@ describe Expense do
   it "should not be valid with a non-numerical amount" do
     @valid_expense.amount = 'xkcd'
     @valid_expense.should_not be_valid
+  end
+  
+  it "should not be valid if it has the same name, amount and date than another one" do
+    expense = Expense.new(:amount => @valid_expense.amount,
+                          :label => @valid_expense.label,
+                          :spent_on => @valid_expense.spent_on, :user => @user1)
+    expense.created_by = @user1 # due to attr_accessible not listing :created_by
+    
+    expense.should_not be_valid
+    expense.errors.full_messages.should == ['This expense has already been recorded']
   end
   
 end

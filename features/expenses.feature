@@ -168,3 +168,19 @@ Feature: A user manages the expenses
 		Then I should see "50,50 zifro"
 		And I should see "40,00 gincy"
 	
+	Scenario: Failing to create a new expense which is a duplicate of another one
+		Given I am logged in as zifro
+		And user zifro is in couple
+		When I go to the new expense page
+		And I fill in "expense[label]" with "Grocery"
+		And I fill in "expense[amount]" with "19.40"
+		And I select "zifro" from "expense[user_id]"
+		And I fill in "expense[spent_on]" with "2012-01-04"
+    And I press "Record"
+		And I go to the new expense page
+		And I fill in "expense[label]" with "Grocery"
+		And I fill in "expense[amount]" with "19.40"
+		And I select "zifro" from "expense[user_id]"
+		And I fill in "expense[spent_on]" with "2012-01-04"
+    And I press "Record"
+    Then I should see "This expense has already been recorded"
