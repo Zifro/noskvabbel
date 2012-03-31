@@ -1,5 +1,12 @@
 if @expense.destroyed?
   page.visual_effect :fade, "expense_#{@expense.id}"
+  if @expense.user == @expense.user.couple.users.first
+    page[:balance_user_1].replace_html partial: 'balance_user_1'
+    page.visual_effect :pulsate, 'balance_user_1'
+  else
+    page[:balance_user_2].replace_html partial: 'balance_user_2'
+    page.visual_effect :pulsate, 'balance_user_2'
+  end
 else
   page.alert 'Expense could not be deleted'
 end

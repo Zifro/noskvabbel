@@ -12,15 +12,11 @@
 		<th><%= t('.who') %></th>
 		<th><%= t('.actions') %></th>
 	</tr>
-	<tr class="balance">
-		<td rowspan="2"><%= Date.today %></td>
-		<td rowspan="2"><%= t('.balance') %></td>
-		<td><%= @users.first[:total] %></td>
-		<td><%= @users.first[:username] %></td>
+	<tr class="balance" id="balance_user_1">
+		<%= render :partial => 'balance_user_1' %>
 	</tr>
-	<tr class="balance">
-		<td><%= @users.second[:total] %></td>
-		<td><%= @users.second[:username] %></td>
+	<tr class="balance user_2" id="balance_user_2">
+		<%= render :partial => 'balance_user_2' %>
 	</tr>
 	<% @expenses.each do |exp| %>
 	<tr id="expense_<%= exp.id %>" class="<%= gender(exp.user) %>">
