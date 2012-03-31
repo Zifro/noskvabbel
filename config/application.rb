@@ -38,6 +38,9 @@ module Noskvabbel
     
     # Enable the asset pipeline
     config.assets.enabled = true
+    
+    # Added to avoid the application to boot when pre-compiling the assets (required for Heroku)
+    config.assets.initialize_on_precompile = false
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
