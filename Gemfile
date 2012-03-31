@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.2'
+gem 'rails', '3.2.3'
 
 gem 'authlogic'
 
@@ -14,7 +14,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
+gem 'prototype-rails'
 
 group :production do
   gem 'pg'
