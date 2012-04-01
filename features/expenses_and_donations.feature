@@ -1,7 +1,7 @@
-Feature: A user manages the expenses
-  In order to review the expenses
+Feature: A user manages the expenses and donations
+  In order to review the expenses and donations
   As a user
-  I want to display the expenses recorded, create new ones, update and delete existing ones
+  I want to display the expenses and donations recorded, create new ones, update and delete existing ones
 
   Scenario: Browsing to the expenses page when not logged in
     Given I'm not logged in
@@ -15,7 +15,7 @@ Feature: A user manages the expenses
     Then I should be on the login page
 		And I should see "not in couple"
 
-  Scenario: Browsing to the expenses page when logged in
+  Scenario: Browsing to the expenses and donations page when logged in
     Given I am logged in as zifro
 		And user zifro is in couple
     When I go to the expenses page
@@ -26,11 +26,11 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
-		| label      | amount | user  | spent_on   |
-		| Grocery    | 50.50  | zifro | 2011-08-19 |
-		| Restaurant | 63.20  | zifro | 2011-08-18 |
-		| Grocery    | 10.60  | zifro | 2011-08-17 |
-		| DVD        | 14.90  | zifro | 2011-08-16 |
+		| label      | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery    | 50.50  | zifro | 2011			  | August      | 19          |
+		| Restaurant | 63.20  | zifro | 2011        | August      | 18          |
+		| Grocery    | 10.60  | zifro | 2011        | August      | 17          |
+		| DVD        | 14.90  | zifro | 2011        | August      | 16          |
 	  When I go to the expenses page
 	  Then I should see the following expenses:
 		| label      | amount | who   | spent_on   |
@@ -57,7 +57,9 @@ Feature: A user manages the expenses
 		And I fill in "expense[label]" with "Bought soft drinks for the party"
 		And I fill in "expense[amount]" with "99.60"
 		And I select "zifro" from "expense[user_id]"
-		And I fill in "expense[spent_on]" with "2011-08-19"
+		And I select "2011" from "expense[spent_on(1i)]"
+		And I select "August" from "expense[spent_on(2i)]"
+		And I select "19" from "expense[spent_on(3i)]"
     And I press "Record"
     Then I should see the following expense:
 		| label                            | amount | spent_on   |
@@ -70,7 +72,9 @@ Feature: A user manages the expenses
 		And I fill in "expense[label]" with "Bought soft drinks for the party"
 		And I fill in "expense[amount]" with "99.60"
 		And I select "zifro" from "expense[user_id]"
-		And I fill in "expense[spent_on]" with "2011-08-19"
+		And I select "2011" from "expense[spent_on(1i)]"
+		And I select "August" from "expense[spent_on(2i)]"
+		And I select "19" from "expense[spent_on(3i)]"
 	  And I follow "cancel"
 	  Then I should not see the following expense:
 		| label                            | amount | spent_on   |
@@ -80,8 +84,8 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
-		| label   | amount | user  | spent_on   |
-		| Grocery | 50.50  | zifro | 2011-08-19 |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
 		Then I should see "Edit"
 		And I should see "Delete"
@@ -91,8 +95,8 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
-		| label   | amount | user  | spent_on   | created_by |
-		| Grocery | 50.50  | zifro | 2011-08-19 | zifro      |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i | created_by |
+		| Grocery | 50.50  | zifro | 2011        | 08          | 19          | zifro      |
 		When I go to the expenses page
 		And I follow "Details"
 		Then I should see "Label"
@@ -103,8 +107,8 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
-		| label   | amount | user  | spent_on   |
-		| Grocery | 50.50  | zifro | 2011-08-19 |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
 		And I follow "Edit"
 		Then I should be on the edit page for the "Grocery/50.50" expense created on 2011-08-19 for user zifro
@@ -114,13 +118,15 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
-		| label   | amount | user  | spent_on   |
-		| Grocery | 50.50  | zifro | 2011-08-19 |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
 		And I follow "Edit"
 		And I fill in "expense[label]" with "Aldi"
 		And I fill in "expense[amount]" with "49.90"
-		And I fill in "expense[spent_on]" with "2011-08-20"
+		And I select "2011" from "expense[spent_on(1i)]"
+		And I select "August" from "expense[spent_on(2i)]"
+		And I select "20" from "expense[spent_on(3i)]"
 		And I press "Update"
 		Then I should be on the expenses page
 		And I should see the following expense:
@@ -132,13 +138,15 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
-		| label   | amount | user  | spent_on   |
-		| Grocery | 50.50  | zifro | 2011-08-19 |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
 		And I follow "Edit"
 		And I fill in "expense[label]" with "Aldi"
 		And I fill in "expense[amount]" with "49.90"
-		And I fill in "expense[spent_on]" with "2011-08-20"
+		And I select "2011" from "expense[spent_on(1i)]"
+		And I select "August" from "expense[spent_on(2i)]"
+		And I select "20" from "expense[spent_on(3i)]"
 		And I follow "cancel"
 		Then I should be on the expenses page
 		And I should see the following expense:
@@ -149,8 +157,8 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple
 		And user zifro has recorded following expenses:
-		| label   | amount | user  | spent_on   |
-		| Grocery | 50.50  | zifro | 2011-08-19 |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
 		And I follow "Delete"
 		Then I should see "Expense successfully deleted"
@@ -159,11 +167,11 @@ Feature: A user manages the expenses
 		Given I am logged in as zifro
 		And user zifro is in couple with gincy
 		And user zifro has recorded following expenses:
-		| label   | amount | user  | spent_on   |
-		| Grocery | 50.50  | zifro | 2011-08-19 |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		And user gincy has recorded following expenses:
-		| label   | amount | user  | spent_on   |
-		| Grocery | 40     | gincy | 2011-08-20 |
+		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
+		| Grocery | 40     | gincy | 2011        | 08          | 20          |
 		When I go to the expenses page
 		Then I should see "50,50 zifro"
 		And I should see "40,00 gincy"
@@ -175,12 +183,16 @@ Feature: A user manages the expenses
 		And I fill in "expense[label]" with "Grocery"
 		And I fill in "expense[amount]" with "19.40"
 		And I select "zifro" from "expense[user_id]"
-		And I fill in "expense[spent_on]" with "2012-01-04"
+		And I select "2012" from "expense[spent_on(1i)]"
+		And I select "March" from "expense[spent_on(2i)]"
+		And I select "31" from "expense[spent_on(3i)]"
     And I press "Record"
 		And I go to the new expense page
 		And I fill in "expense[label]" with "Grocery"
 		And I fill in "expense[amount]" with "19.40"
 		And I select "zifro" from "expense[user_id]"
-		And I fill in "expense[spent_on]" with "2012-01-04"
+		And I select "2012" from "expense[spent_on(1i)]"
+		And I select "March" from "expense[spent_on(2i)]"
+		And I select "31" from "expense[spent_on(3i)]"
     And I press "Record"
     Then I should see "This expense has already been recorded"

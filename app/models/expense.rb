@@ -13,6 +13,12 @@ class Expense < ActiveRecord::Base
 
   attr_accessible :label, :amount, :spent_on, :user, :user_id
   
+  
+  # Returns the spent_on attribute or its default value
+  def spent_on
+    self.attributes['spent_on'] ||= Date.today
+  end
+  
 
   private
   

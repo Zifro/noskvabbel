@@ -76,9 +76,9 @@ describe Expense do
     @valid_expense.should_not be_valid
   end
   
-  it "should not be valid without a spent_on" do
+  it "should be valid even without a spent_on" do
     @valid_expense.spent_on = nil
-    @valid_expense.should_not be_valid
+    @valid_expense.should be_valid
   end
   
   it "should not be valid with an amount of 0" do
@@ -104,6 +104,10 @@ describe Expense do
     
     expense.should_not be_valid
     expense.errors.full_messages.should == ['This expense has already been recorded']
+  end
+
+  it "should have its spent_on attribute defaults to the date of the day" do
+    Expense.new.spent_on.should == Date.today
   end
   
 end

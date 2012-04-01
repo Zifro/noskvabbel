@@ -18,7 +18,7 @@
   <br/>
 	<%= f.label :user_id, t('.who') %> <%= f.select :user_id, options_for_select(current_user) %>
 	<br/>
-  <%= f.label :spent_on, t('.date') %> <%= f.text_field :spent_on %>
+  <%= f.label :spent_on, t('.date') %> <%= f.date_select :spent_on %>
   <br/>
   <%= f.submit t('.record_button') %> <%= t('.or') %> <%= link_to t('.cancel'), expenses_path %>
 <% end %>
