@@ -1,4 +1,4 @@
-Given /^user (\S+) has recorded following expenses:$/ do |user, table|
+Given /^user (\S+) has recorded the following expenses:$/ do |user, table|
   # table is a Cucumber::Ast::Table
   user = User.find_by_username(user)
   table.hashes.each do |expense|
