@@ -1,7 +1,7 @@
-Feature: A user manages the expenses and donations
-  In order to review the expenses and donations
+Feature: A user manages the expenses
+  In order to review the expenses
   As a user
-  I want to display the expenses and donations recorded, create new ones, update and delete existing ones
+  I want to display the expenses recorded, create new ones, update and delete existing ones
 
   Scenario: Browsing to the expenses page when not logged in
     Given I'm not logged in
@@ -25,7 +25,7 @@ Feature: A user manages the expenses and donations
 	Scenario: Displaying expenses on the said page
 		Given I am logged in as zifro
 		And user zifro is in couple
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label      | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery    | 50.50  | zifro | 2011			  | August      | 19          |
 		| Restaurant | 63.20  | zifro | 2011        | August      | 18          |
@@ -83,7 +83,7 @@ Feature: A user manages the expenses and donations
 	Scenario: Display the embedded action links
 		Given I am logged in as zifro
 		And user zifro is in couple
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
@@ -94,7 +94,7 @@ Feature: A user manages the expenses and donations
 	Scenario: Browsing to the details expense page
 		Given I am logged in as zifro
 		And user zifro is in couple
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i | created_by |
 		| Grocery | 50.50  | zifro | 2011        | 08          | 19          | zifro      |
 		When I go to the expenses page
@@ -106,7 +106,7 @@ Feature: A user manages the expenses and donations
 	Scenario: Browsing to the edit expense page
 		Given I am logged in as zifro
 		And user zifro is in couple
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
@@ -117,7 +117,7 @@ Feature: A user manages the expenses and donations
 	Scenario: Updating an expense
 		Given I am logged in as zifro
 		And user zifro is in couple
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
@@ -137,7 +137,7 @@ Feature: A user manages the expenses and donations
 	Scenario: Cancelling the update of an expense
 		Given I am logged in as zifro
 		And user zifro is in couple
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
@@ -156,7 +156,7 @@ Feature: A user manages the expenses and donations
 	Scenario: Deleting an expense
 		Given I am logged in as zifro
 		And user zifro is in couple
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
 		When I go to the expenses page
@@ -166,10 +166,10 @@ Feature: A user manages the expenses and donations
 	Scenario: Displaying the balance
 		Given I am logged in as zifro
 		And user zifro is in couple with gincy
-		And user zifro has recorded following expenses:
+		And user zifro has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery | 50.50  | zifro | 2011        | 08          | 19          |
-		And user gincy has recorded following expenses:
+		And user gincy has recorded the following expenses:
 		| label   | amount | user  | spent_on_1i | spent_on_2i | spent_on_3i |
 		| Grocery | 40     | gincy | 2011        | 08          | 20          |
 		When I go to the expenses page
