@@ -21,11 +21,14 @@ group :production do
 end
 group :development, :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
-	gem 'rspec-rails'
-	gem 'cucumber-rails'
 	gem 'webrat'
 	gem 'database_cleaner'
 	gem 'syntax'
+end
+
+group :test do
+  gem 'rspec-rails'
+	gem 'cucumber-rails'
 end
 
 # Use unicorn as the web server
