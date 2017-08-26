@@ -15,7 +15,7 @@ en:
       not_in_couple_yet: "Not in couple yet? Don't worry."
       account: "Account"
       logout: "Logout"
-      tagline: "Sharing expenses in a couple should be easy"
+      tagline: "Sharing expenses in a couple should be very easy"
 
   user_sessions:
 
@@ -26,11 +26,11 @@ en:
       the_following_errors___no_login: "The following errors prevented you from login in the application"
       username: "Username"
       password: "Password"
-      
+
   expenses:
-    
+
     index:
-      
+
       list: "List of expenses"
       record_new_expense: "Record a new expense"
       when: "When"
@@ -45,13 +45,13 @@ en:
       confirm_delete: "Are you sure?"
       none_yet: "No expenses yet, why not"
       new_one: "create a new one"
-    
+
     details:
-      
+
       close: "Close"
-            
+
     new:
-      
+
       provide_info_for_new_expense: "Provide the following information to record a new expense"
       label: "Label"
       amount: "Amount"
@@ -71,7 +71,7 @@ en:
       record_button: "Update"
       or: "or"
       cancel: "cancel"
-      
+
   users:
 
     edit:
