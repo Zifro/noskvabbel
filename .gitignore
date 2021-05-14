@@ -2,8 +2,8 @@
 db/*.sqlite3
 log/*.log
 tmp/
-
 .DS_Store
-
-
+config/master.key
 *.dump
+
+/config/master.key
