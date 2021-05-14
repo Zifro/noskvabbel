@@ -1,12 +1,12 @@
-<ul id="title_and_actions">
-	<li id="title"><%= t('.list') %> - </li>
-	<li><%= link_to t('.record_new_expense'), new_expense_path %></li>
-</ul>
+<h2><%= t('.list') %></h2>
+<br />
+
+<%= link_to t('.record_new_expense'), new_expense_path %>
 
 <% if @expenses.any? %>
-<table id="expenses">
+<table id="expenses" class="table">
 	<tr>
-		<th><%= t('.when') %></th>		
+		<th><%= t('.when') %></th>
 		<th><%= t('.what') %></th>
 		<th><%= t('.how_much') %></th>
 		<th><%= t('.who') %></th>
@@ -27,10 +27,11 @@
 		<td>
 			<%= link_to t('.details'), expense_path(exp), remote: true, id: "details_for_#{exp.id}" %>,
 			<%= link_to t('.edit'), edit_expense_path(exp) %> or
-			<%= link_to t('.delete'), exp, :confirm => t('.confirm_delete'), :remote => true, :method => :delete %>
+			<%= link_to t('.delete'), exp, :data => { :confirm => t('.confirm_delete') }, :remote => true, :method => :delete %>
 		</td>
 	</tr>
 	<% end %>
 <% else %>
-	t('.none_yet') <%= link_to t('.new_one'), new_expense_path %> ?
+	<%= t('.none_yet') %>
+	<%= link_to t('.new_one'), new_expense_path %> ?
 <% end %>

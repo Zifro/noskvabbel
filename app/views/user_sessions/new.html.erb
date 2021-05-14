@@ -1,24 +1,35 @@
-<ul id="title_and_actions">
-	<li id="title"><%= t('.login') %></li>
-</ul>
+<div class="span5 offset3">
 
-<%= form_for(@user_session) do |f| %>
-	<% if @user_session.errors.any? %>
-	<div id="errors">
-		<%= t('.the_following_errors___no_login') %>
-		<ul>
-			<% @user_session.errors.full_messages.each do |msg| %>
-				<li><%= msg %></li>
-			<% end %>
-		</ul>
-		<a href="#" class="close" alt="close" onclick="$('errors').fade(); return false;">close</a>
-	</div>
+	<%= form_for(@user_session, :html => { :class => "form-horizontal" }) do |f| %>
+		<% if @user_session.errors.any? %>
+		<div id="errors">
+			<%= t('.the_following_errors___no_login') %>
+			<ul>
+				<% @user_session.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+			<a href="#" class="close" alt="close" onclick="$('errors').fade(); return false;">close</a>
+		</div>
+		<% end %>
+		<fieldset>
+			<legend><%= t('.login') %></legend>
+	    <div class="control-group">
+	  		<%= f.label t('.username'), :class => "control-label", :for => :user_session_username %>
+				<div class="controls">
+					<%= f.text_field :username %>
+				</div>
+			</div>
+			<div class="control-group">
+	  		<%= f.label t('.password'), :class => "control-label", :for => :user_session_password %>
+				<div class="controls">
+					<%= f.password_field :password %>
+				</div>
+			</div>
+			<div class="form-actions">
+	  		<%= f.submit t('.login_button'), :class => "btn btn-primary" %>
+      </div>
+		</fieldset>
 	<% end %>
 
-  <%= f.label t('.username') %> <%= f.text_field :username %>
-  <br/>
-  <%= f.label t('.password') %> <%= f.password_field :password %>
-  <br/>
-  <%= f.submit t('.login_button') %>
-  
-<% end %>
+</div>

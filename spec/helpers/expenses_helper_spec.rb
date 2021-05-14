@@ -1,15 +1,22 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
-# Specs in this file have access to a helper object that includes
-# the ExpensesHelper. For example:
-#
-# describe ExpensesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       helper.concat_strings("this","that").should == "this that"
-#     end
-#   end
-# end
-describe ExpensesHelper do
-  pending "add some examples to (or delete) #{__FILE__}"
+require 'rails_helper'
+
+RSpec.describe ExpensesHelper do
+  class Klass
+    include ExpensesHelper
+  end
+
+  subject(:options) { Klass.new.options_for_select(user) }
+
+  before { create_list(:couple, rand(2..5)) }
+
+  let(:user) { User.first }
+  let(:expected_options) do
+    user.couple.users.map do |user|
+      [user.username, user.id]
+    end
+  end
+
+  it { is_expected.to match_array(expected_options) }
 end

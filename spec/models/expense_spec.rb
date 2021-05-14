@@ -1,113 +1,98 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
-describe Expense do
-  
-  before(:all) do
-    User.destroy_all
-    @user1 = User.create!(:username              => 'lover1',
-                          :email                 => "lover1@domain.tld",
-                          :password              => 'password',
-                          :password_confirmation => 'password')
-    @user2 = User.create!(:username              => 'lover2',
-                          :email                 => "lover2@domain.tld",
-                          :password              => 'password',
-                          :password_confirmation => 'password')
-    Expense.destroy_all
-  end
-  
-  before(:each) do
-    @valid_expense = Expense.new(:amount => 50, :label => "grocery", :spent_on => 2.days.ago, :user => User.first)
-    @valid_expense.created_by = User.first # due to attr_accessible not listing :created_by
-    @valid_expense.save!
-  end
-  
-  it "should have an amount attribute" do
-    e = Expense.new
-    e.attributes.should have_key("amount")
-    e.should respond_to(:amount)
-    e.should respond_to(:amount=)
-  end
-  
-  it "should have an a label attribute" do
-    e = Expense.new
-    e.attributes.should have_key("label")
-    e.should respond_to(:label)
-    e.should respond_to(:label=)
+require 'rails_helper'
+
+RSpec.describe Expense do
+  subject(:expense) { create(:expense) }
+
+  describe 'attributes' do
+    subject(:expense) { described_class.new }
+
+    it { expect(expense.attributes).to have_key('amount') }
+    it { is_expected.to respond_to(:amount) }
+    it { is_expected.to respond_to(:amount=) }
+
+    it { expect(expense.attributes).to have_key('label') }
+    it { is_expected.to respond_to(:label) }
+    it { is_expected.to respond_to(:label=) }
+
+    it { expect(expense.attributes).to have_key('spent_on') }
+    it { is_expected.to respond_to(:spent_on) }
+    it { is_expected.to respond_to(:spent_on=) }
   end
 
-  it "should have an a spent_on attribute" do
-    e = Expense.new
-    e.attributes.should have_key("spent_on")
-    e.should respond_to(:spent_on)
-    e.should respond_to(:spent_on=)
+  describe 'associations' do
+    it { is_expected.to respond_to(:user) }
+    it { is_expected.to respond_to(:user=) }
+
+    it { is_expected.to respond_to(:created_by) }
+    it { is_expected.to respond_to(:created_by=) }
   end
 
-  it "should belongs to a user" do
-    user = User.first
-    e = Expense.new(:amount => 50, :label => "grocery", :spent_on => 2.days.ago, :user => User.first)
-    e.created_by = User.first # due to attr_accessible not listing :created_by
-    e.user.should == user
-  end
-  
-  it "should have been created_by a user" do
-    user = User.first
-    e = Expense.new(:amount => 50, :label => "grocery", :spent_on => 2.days.ago, :user => User.first)
-    e.created_by = User.first # due to attr_accessible not listing :created_by
-    e.created_by.should == user
-  end
+  describe 'validations' do
+    context 'without an amount' do
+      before { expense.amount = nil }
 
-  it "should not be valid without an amount" do
-    @valid_expense.amount = nil
-    @valid_expense.should_not be_valid
-  end
+      it { is_expected.not_to be_valid }
+    end
 
-  it "should not be valid without a user" do
-    @valid_expense.user = nil
-    @valid_expense.should_not be_valid
-  end
+    context 'with an amount of 0' do
+      before { expense.amount = 0 }
 
-  it "should not be valid without a created_by" do
-    @valid_expense.created_by = nil
-    @valid_expense.should_not be_valid
-  end
-  
-  it "should not be valid without a label" do
-    @valid_expense.label = nil
-    @valid_expense.should_not be_valid
-  end
-  
-  it "should be valid even without a spent_on" do
-    @valid_expense.spent_on = nil
-    @valid_expense.should be_valid
-  end
-  
-  it "should not be valid with an amount of 0" do
-    @valid_expense.amount = 0
-    @valid_expense.should_not be_valid
-  end
-  
-  it "should not be valid with an amount lesser than 0.01" do
-    @valid_expense.amount = 0.009
-    @valid_expense.should_not be_valid
-  end
-  
-  it "should not be valid with a non-numerical amount" do
-    @valid_expense.amount = 'xkcd'
-    @valid_expense.should_not be_valid
-  end
-  
-  it "should not be valid if it has the same name, amount and date than another one" do
-    expense = Expense.new(:amount => @valid_expense.amount,
-                          :label => @valid_expense.label,
-                          :spent_on => @valid_expense.spent_on, :user => @user1)
-    expense.created_by = @user1 # due to attr_accessible not listing :created_by
-    
-    expense.should_not be_valid
-    expense.errors.full_messages.should == ['This expense has already been recorded']
-  end
+      it { is_expected.not_to be_valid }
+    end
 
-  it "should have its spent_on attribute defaults to the date of the day" do
-    Expense.new.spent_on.should == Date.today
+    context 'with an amount lower than 0.01' do
+      before { expense.amount = Faker::Number.between(from: 0.001, to: 0.009) }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context 'with a non-numerical amount' do
+      before { expense.amount = Faker::Lorem.word }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context 'without a label' do
+      before { expense.label = nil }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context 'without a spent_on information' do
+      before { expense.spent_on = nil }
+
+      it { is_expected.to be_valid }
+      it { expect(expense.spent_on).to eq(Time.zone.today) }
+    end
+
+    context 'without a user' do
+      before { expense.user = nil }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context 'without a created_by' do
+      before { expense.created_by = nil }
+
+      it { is_expected.not_to be_valid }
+    end
+
+    context 'with the same name, amount, and date than another expense' do
+      let(:doppelganger) do
+        build(
+          :expense,
+          amount: expense.amount,
+          label: expense.label,
+          spent_on: expense.spent_on
+        )
+      end
+
+      before { doppelganger.valid? }
+
+      it { expect(doppelganger).not_to be_valid }
+      it { expect(doppelganger.errors[:amount]).to match_array('This expense has already been recorded') }
+    end
   end
-  
 end
