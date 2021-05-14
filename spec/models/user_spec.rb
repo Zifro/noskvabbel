@@ -1,92 +1,74 @@
-require 'spec_helper'
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+ALPHABET_WITHOUT_M_AND_F = (('A'..'Z').to_a - %w[M F]).freeze
 
 describe User do
+  subject(:user) { create(:user) }
 
-  before(:all) do
-    User.destroy_all
-    @user1 = User.create!(:username              => 'lover1',
-                          :email                 => "lover1@domain.tld",
-                          :gender                => 'F',
-                          :password              => 'password',
-                          :password_confirmation => 'password')
-    @user2 = User.create!(:username              => 'lover2',
-                          :email                 => "lover2@domain.tld",
-                          :gender                => 'M',
-                          :password              => 'password',
-                          :password_confirmation => 'password')
+  let(:another_user) { create(:user) }
+
+  describe 'attributes' do
+    let(:user) { described_class.new }
+
+    it { expect(user.attributes).to have_key('username') }
+    it { is_expected.to respond_to(:username) }
+    it { is_expected.to respond_to(:username=) }
+
+    it { expect(user.attributes).to have_key('email') }
+    it { is_expected.to respond_to(:email) }
+    it { is_expected.to respond_to(:email=) }
+
+    it { is_expected.to respond_to(:password=) }
+
+    it { expect(user.attributes).to have_key('gender') }
+    it { is_expected.to respond_to(:gender) }
+    it { is_expected.to respond_to(:gender=) }
   end
 
-  it "should have a username attribute" do
-    u = User.new
-    u.attributes.should have_key("username")
-    u.should respond_to(:username)
-    u.should respond_to(:username=)
-  end
+  describe 'associations' do
+    describe 'couple' do
+      subject(:user) { create(:user, :in_couple) }
 
-  it "should have an email attribute" do
-    u = User.new
-    u.attributes.should have_key("email")
-    u.should respond_to(:email)
-    u.should respond_to(:email=)
-  end
-
-  it "should have a password= method" do
-    u = User.new
-    u.should respond_to(:password=)
-  end
-
-  context "in a couple" do
-
-    it "should have a couple method" do
-      u = User.new
-      u.should respond_to(:couple)
+      it { is_expected.to respond_to(:couple) }
+      it { expect(user.couple.users).to include(user) }
     end
 
-    it "should belongs to a couple" do
-      couple = Couple.create!(:users => [@user1, @user2])
-      @user1.couple.should == couple 
+    describe 'expenses' do
+      subject(:user) { create(:user, :with_expenses) }
+
+      it { is_expected.to respond_to(:expenses) }
+      it { expect(user.expenses.first).to be_an(Expense) }
     end
-           
   end
 
-  context "with expenses" do
-    
-    it "should have an expenses method" do
-      u = User.new
-      u.should respond_to(:expenses)
+  describe 'validations' do
+    context 'when gender is not set' do
+      before { user.gender = nil }
+
+      it { is_expected.to be_valid }
     end
 
-    it "should have many expenses" do
-      expense = Expense.new(:amount => 10, :label => "XXX", :spent_on => 2.days.ago, :user => @user1)
-      expense.created_by = @user1 # due to attr_accessible not listing :created_by
-      expense.save!
-      @user1.expenses.should be_kind_of(Array)
-      @user1.expenses.first.should be_kind_of(Expense)
-      @user1.expenses.first.amount.should == 10
+    context 'when gender is set to M' do
+      before { user.gender = 'M' }
+
+      it { is_expected.to be_valid }
     end
-  
+
+    context 'when gender is set to F' do
+      before { user.gender = 'F' }
+
+      it { is_expected.to be_valid }
+    end
+
+    context 'when gender is set to another letter' do
+      let(:a_capital_letter_other_than_m_or_f) { ALPHABET_WITHOUT_M_AND_F.sample }
+
+      before { user.gender = a_capital_letter_other_than_m_or_f }
+
+      it { is_expected.not_to be_valid }
+      it { expect(user.errors[:gender]).to be_empty }
+    end
   end
-
-  context "as a gender kind" do
-
-    it "should have a gender attribute" do
-      u = User.new
-      u.attributes.should have_key("gender")
-      u.should respond_to(:gender)
-      u.should respond_to(:gender=)
-    end
-
-    it "should only accept 'M' or 'F' as gender" do
-      u = User.first
-      u.gender = 'M'
-      u.should be_valid
-      u.gender = 'F'
-      u.should be_valid
-      u.gender = 'X'
-      u.should_not be_valid
-    end
-
-
-  end
-
 end

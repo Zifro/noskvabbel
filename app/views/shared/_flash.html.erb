@@ -1,0 +1,12 @@
+<% if flash and (flash[:notice] or flash[:info] or flash[:warn] or flash[:error]) %>
+<div class="row-fluid">
+	<div class="span12">
+	<% if flash[:notice] %>
+	<div class="alert alert-info">
+		<a class="close" data-dismiss="alert" href="#">&times;</a>
+		<%= flash[:notice] %>
+	</div>
+	<% end %>
+</div>
+</div>
+<% end %>

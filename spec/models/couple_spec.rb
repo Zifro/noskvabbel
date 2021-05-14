@@ -1,47 +1,41 @@
-require 'spec_helper'
+# frozen_string_literal: true
 
-describe Couple do
-  
-  before(:all) do
-    User.destroy_all
-    User.create!(:username              => 'lover1',
-                 :email                 => "lover1@domain.tld",
-                 :password              => 'password',
-                 :password_confirmation => 'password')
-    User.create!(:username              => 'lover2',
-                 :email                 => "lover2@domain.tld",
-                 :password              => 'password',
-                 :password_confirmation => 'password')
+require 'rails_helper'
+
+RSpec.describe Couple do
+  let(:couple) { create(:couple) }
+
+  describe 'associations' do
+    it { expect(couple).to respond_to(:users) }
+    it { expect(couple).to respond_to(:expenses) }
   end
 
-  before(:each) do
-    @couple = Couple.create!(:users => [User.find_by_username('lover1'), User.find_by_username('lover2')])
-  end
-  
-  it "should have users" do
-    Couple.new.should respond_to(:users)
-  end
+  describe 'validations' do
+    context 'without users' do
+      before { couple.users = [] }
 
-  it "should not be valid without users" do
-    @couple.users = []
-    @couple.should_not be_valid
-  end
-  
-  it "should not be valid with only one user" do
-    @couple.users = [User.first]
-    @couple.should_not be_valid
-  end
-  
-  it "should be valid with two users" do
-    @couple.should be_valid
-  end
-  
-  it "should not be valid with three or more users" do
-    pending "generate a lot of users on the fly for this test"
-  end
-  
-  it "should have expenses" do
-    Couple.new.should respond_to(:expenses)
-  end
+      it { expect(couple).not_to be_valid }
+    end
 
+    context 'with only one user' do
+      let(:user) { create(:user) }
+
+      before { couple.users = [user] }
+
+      it { expect(couple).not_to be_valid }
+    end
+
+    context 'with two users' do
+      it { expect(couple.users).to have(2).items }
+      it { expect(couple).to be_valid }
+    end
+
+    context 'with more than two users' do
+      let(:number_of_users) { rand(3..10) }
+
+      before { couple.users = create_list(:user, number_of_users) }
+
+      it { expect(couple).not_to be_valid }
+    end
+  end
 end
