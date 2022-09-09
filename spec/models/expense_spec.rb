@@ -42,12 +42,6 @@ RSpec.describe Expense do
       it { is_expected.not_to be_valid }
     end
 
-    context 'with an amount lower than 0.01' do
-      before { expense.amount = Faker::Number.between(from: 0.001, to: 0.009) }
-
-      it { is_expected.not_to be_valid }
-    end
-
     context 'with a non-numerical amount' do
       before { expense.amount = Faker::Lorem.word }
 
