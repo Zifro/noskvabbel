@@ -5,5 +5,4 @@ tmp/
 .DS_Store
 config/master.key
 *.dump
-
-/config/master.key
+node_modules/*
