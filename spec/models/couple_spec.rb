@@ -14,7 +14,7 @@ RSpec.describe Couple do
     context 'without users' do
       before { couple.users = [] }
 
-      it { expect(couple).not_to be_valid }
+      it { expect(couple).to be_valid }
     end
 
     context 'with only one user' do
