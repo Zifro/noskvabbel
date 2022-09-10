@@ -4,7 +4,7 @@ class CreateExpenses < ActiveRecord::Migration[6.1]
   def change
     create_table :expenses do |t|
       t.references :user
-      t.decimal :amount, precision: 5, scale: 2
+      t.decimal :amount, precision: 7, scale: 2
       t.string :label
       t.date :spent_on
       t.integer :created_by_id

@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_141718) do
 
   create_table "expenses", force: :cascade do |t|
     t.integer "user_id"
-    t.decimal "amount", precision: 5, scale: 2
+    t.decimal "amount", precision: 7, scale: 2
     t.string "label"
     t.date "spent_on"
     t.integer "created_by_id"
