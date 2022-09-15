@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2021_03_27_141718) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_09_15_200215) do
   create_table "couples", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "expenses", force: :cascade do |t|
@@ -23,8 +22,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_03_27_141718) do
     t.string "label"
     t.date "spent_on"
     t.integer "created_by_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["amount", "label", "spent_on"], name: "index_expenses_on_amount_and_label_and_spent_on", unique: true
     t.index ["user_id"], name: "index_expenses_on_user_id"
   end
@@ -32,8 +31,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_03_27_141718) do
   create_table "user_sessions", force: :cascade do |t|
     t.string "username"
     t.string "password"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -44,8 +43,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_03_27_141718) do
     t.string "persistence_token"
     t.integer "couple_id"
     t.string "gender", limit: 1
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["couple_id"], name: "index_users_on_couple_id"
   end
 
