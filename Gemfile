@@ -20,8 +20,6 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'pg', group: :production
-
 # Simple authentication with Authlogic, which provides acts_as_authentic
 gem 'authlogic'
 gem 'scrypt', '~> 3.0'
@@ -29,14 +27,15 @@ gem 'scrypt', '~> 3.0'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+# Use sqlite3 as the database for Active Record
+gem 'sqlite3', '~> 1.4'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3', '~> 1.4'
   # We'll use RSpec to write specifications, the BDD way
   gem 'factory_bot'
   gem 'factory_bot_rails'
