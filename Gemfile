@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.1.2'
+ruby '3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 7'
@@ -39,7 +39,7 @@ group :development, :test do
   # We'll use RSpec to write specifications, the BDD way
   gem 'factory_bot'
   gem 'factory_bot_rails'
-  gem 'faker', git: 'https://github.com/faker-ruby/faker.git', branch: 'master'
+  gem 'faker'
   gem 'rspec', '~> 3.0'
   gem 'rspec-collection_matchers'
   gem 'rspec-rails', '~> 5.0.0'
