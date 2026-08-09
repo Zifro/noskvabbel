@@ -160,8 +160,8 @@ GEM
       timeout
     net-smtp (0.5.0)
       net-protocol
-    nio4r (2.7.3)
-    nokogiri (1.16.8-x86_64-linux)
+    nio4r (2.7.5)
+    nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     parallel (1.24.0)
     parser (3.3.2.0)
@@ -170,7 +170,7 @@ GEM
     psych (5.1.2)
       stringio
     public_suffix (5.0.5)
-    puma (5.6.9)
+    puma (6.6.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.1.14)
@@ -343,7 +343,7 @@ DEPENDENCIES
   importmap-rails (~> 1.1)
   jbuilder (~> 2.7)
   listen (~> 3.3)
-  puma (~> 5.6)
+  puma (~> 6)
   rack-mini-profiler (~> 2.0)
   rails (~> 7)
   rspec (~> 3.0)
