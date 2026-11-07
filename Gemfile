@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '4.0.9'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem 'rails', '~> 7'
+gem 'rails', '~> 8.1'
 # Use Puma as the app server
 gem 'puma', '~> 6'
 # Use SCSS for stylesheets
@@ -28,7 +28,7 @@ gem 'scrypt', '~> 3.0'
 # gem 'image_processing', '~> 1.2'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3', '~> 1.5'
+gem 'sqlite3', '~> 2.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -40,9 +40,9 @@ group :development, :test do
   gem 'factory_bot'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rspec', '~> 3.0'
+  gem 'rspec', '~> 3.13'
   gem 'rspec-collection_matchers'
-  gem 'rspec-rails', '~> 5.0.0'
+  gem 'rspec-rails', '~> 8.0'
 end
 
 group :development do
@@ -52,8 +52,7 @@ group :development do
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  # Spring speed-up removed: the gem is no longer maintained.
   # We want to write code following good practices
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
@@ -64,11 +63,10 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.26'
   gem 'selenium-webdriver'
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem 'webdrivers'
+  # The retired `webdrivers` gem was removed: Selenium Manager (selenium-webdriver >= 4.11) handles drivers.
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
-gem "importmap-rails", "~> 1.1"
+gem "importmap-rails", "~> 2.0"
