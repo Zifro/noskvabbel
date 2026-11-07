@@ -6,3 +6,4 @@ tmp/
 config/master.key
 *.dump
 node_modules/*
+public/assets/*
