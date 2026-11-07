@@ -3,6 +3,15 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
+
+# Authlogic inspects the users table when the User class first loads, which
+# happens while the application boots. On a fresh clone, prepare the test
+# database BEFORE loading the application (like `bin/setup` does) so that
+# acts_as_authentic gets its columns.
+unless File.exist?(File.expand_path('../db/test.sqlite3', __dir__))
+  system('bin/rails db:test:prepare', exception: true)
+end
+
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
@@ -27,16 +36,13 @@ require 'faker'
 #
 # Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
-# In order to keep the same RAILS_ENV for rspec and cucumber, and to make rspec
-# faster, patch the connection to use sqlite in memory when running rspec
-ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
-ActiveRecord::Schema.verbose = false
-load(Rails.root.join('db/schema.rb'))
+# In order to keep the test database pristine and make `bundle exec rspec`
+# self-sufficient, ActiveRecord keeps the test database in sync with the
+# schema whenever it lags behind (this replaces the former in-memory
+# sqlite workaround, which fought Rails' lazy class loading).
+ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
