@@ -56,16 +56,11 @@ class ExpensesController < ApplicationController
 
   # Destroys an expense from what the user has passed as parameter
   def destroy
-    respond_to do |format|
-      @expense = Expense.find(params[:id])
-      # TODO: add a filter so that only expenses linked to the couple of the user can be destroyed
-      if @expense.destroy
-        load_users
-        format.html { redirect_to(expenses_path, notice: 'Expense successfully deleted') }
-      else
-        format.html { redirect_to(expenses_path, error: 'Expense could not be deleted') }
-      end
-      format.js
+    @expense = current_user.couple.expenses.find(params[:id])
+    if @expense.destroy
+      redirect_to(expenses_path, notice: 'Expense successfully deleted')
+    else
+      redirect_to(expenses_path, error: 'Expense could not be deleted')
     end
   end
 

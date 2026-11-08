@@ -38,6 +38,17 @@ RSpec.describe 'Expenses', type: :request do
         expect(response.body).not_to include('Purchase of another couple')
         expect(expense.user.couple.expenses).to contain_exactly(expense)
       end
+
+      it 'deletes through a Turbo-confirmed DELETE request, not by opening the details page' do
+        expense = create(:expense, user: user, created_by: user, label: 'Groceries')
+
+        get expenses_path
+
+        expect(response.body).to include(
+          %(<a data-turbo-method="delete" data-turbo-confirm="Are you sure?" href="#{expense_path(expense)}">Delete</a>)
+        )
+        expect(response.body).not_to include('data-confirm')
+      end
     end
 
     describe 'GET /expenses/new' do
@@ -118,6 +129,16 @@ RSpec.describe 'Expenses', type: :request do
 
         expect(response).to redirect_to(expenses_path)
         expect(flash[:notice]).to eq('Expense successfully deleted')
+      end
+
+      it 'refuses to destroy an expense belonging to another couple' do
+        expense = create(:expense, label: 'Purchase of another couple')
+
+        expect do
+          delete expense_path(expense)
+        end.not_to change(Expense, :count)
+
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
