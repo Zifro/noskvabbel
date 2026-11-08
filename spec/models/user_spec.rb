@@ -44,6 +44,12 @@ describe User do
   end
 
   describe 'validations' do
+    context 'when username is already taken with a different case' do
+      before { user.username = another_user.username.upcase }
+
+      it { is_expected.not_to be_valid }
+    end
+
     context 'when gender is not set' do
       before { user.gender = nil }
 
