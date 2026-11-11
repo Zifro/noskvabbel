@@ -7,7 +7,7 @@ class ExpensesController < ApplicationController
 
   # Lists the expenses recorded for the couple of the user
   def index
-    @expenses = current_user.couple.expenses
+    @expenses = current_user.couple.expenses.includes(:user)
     load_users
   end
 
