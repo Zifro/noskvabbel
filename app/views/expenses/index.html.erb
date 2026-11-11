@@ -27,7 +27,7 @@
 		<td>
 			<%= link_to t('.details'), expense_path(exp), remote: true, id: "details_for_#{exp.id}" %>,
 			<%= link_to t('.edit'), edit_expense_path(exp) %> or
-			<%= link_to t('.delete'), exp, :data => { :confirm => t('.confirm_delete') }, :remote => true, :method => :delete %>
+			<%= link_to t('.delete'), exp, :data => { :turbo_method => :delete, :turbo_confirm => t('.confirm_delete') } %>
 		</td>
 	</tr>
 	<% end %>
