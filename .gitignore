@@ -7,3 +7,4 @@ config/master.key
 *.dump
 node_modules/*
 public/assets/*
+public/packs/*
