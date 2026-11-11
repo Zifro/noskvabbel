@@ -8,5 +8,6 @@ class User < ApplicationRecord
   belongs_to :couple, optional: true
   has_many :expenses, dependent: :restrict_with_exception
 
+  validates :username, uniqueness: { case_sensitive: false }
   validates :gender, inclusion: { in: %w[M F], allow_nil: true }
 end
