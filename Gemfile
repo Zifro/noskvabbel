@@ -54,9 +54,13 @@ group :development do
   gem 'rack-mini-profiler', '~> 2.0'
   # Spring speed-up removed: the gem is no longer maintained.
   # We want to write code following good practices
+
   gem 'rubocop', require: false
+  gem 'rubocop-erb', require: false
+  gem 'rubocop-factory_bot', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'rubocop-rspec_rails', require: false
 end
 
 group :test do

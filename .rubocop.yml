@@ -1,0 +1,113 @@
+plugins:
+  - rubocop-rails
+  - rubocop-factory_bot
+  - rubocop-erb
+  - rubocop-rspec
+  - rubocop-rspec_rails
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  # Exclude restates the default excludes of RuboCop and rubocop-rails, except
+  # bin/*, whose Ruby scripts rubocop-rails would skip. spec/rubocop_config_spec.rb
+  # fails when an upgrade adds a default this list misses.
+  inherit_mode:
+    override:
+      - Exclude
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - .git/**/*
+    - node_modules/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - '**/app/assets/**/*'
+    - db/*schema.rb
+    - db/migrate/**/*
+    - log/**/*
+    - public/**/*
+    - storage/**/*
+
+# The scripts in bin/ run without ActiveSupport (Rails/Present would call
+# String#present? in bin/bundle). A cop with its own default Exclude ignores
+# the department's, so it is excluded by name below; spec/rubocop_config_spec.rb
+# fails when a Rails cop still applies to bin/.
+Rails:
+  Exclude:
+    - bin/*
+
+Rails/ApplicationRecord:
+  Exclude:
+    - bin/*
+
+Rails/ContentTag:
+  Exclude:
+    - bin/*
+
+Rails/Delegate:
+  Exclude:
+    - bin/*
+
+Rails/TimeZone:
+  Exclude:
+    - bin/*
+
+Layout/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+Layout/EndOfLine:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/BlockLength:
+  Exclude:
+    - config/**/*
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 30
+
+Metrics/ModuleLength:
+  Max: 200
+
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
+Metrics/PerceivedComplexity:
+  Max: 20
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Rails/FilePath:
+  EnforcedStyle: arguments
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/ImplicitSubject:
+  EnforcedStyle: require_implicit
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 5
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/Documentation:
+  Enabled: false
