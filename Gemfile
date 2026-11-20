@@ -53,8 +53,11 @@ group :development do
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
   # Spring speed-up removed: the gem is no longer maintained.
-  # We want to write code following good practices
 
+  # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
+  gem 'brakeman', require: false
+
+  # We want to write code following good practices
   gem 'rubocop', require: false
   gem 'rubocop-erb', require: false
   gem 'rubocop-factory_bot', require: false
