@@ -53,9 +53,6 @@ console manually on a fresh clone, run `bin/rails db:test:prepare` first.
   the test schema in sync.
 - Prefer request specs for controller behavior and model specs for domain
   rules (e.g. the couple-must-have-zero-or-two-users validation).
-- The legacy Minitest tree under `test/` is kept as-is and is out of scope:
-  do not add new tests there and do not delete it. `bin/ci` still runs
-  `bin/rails test`, so do not break it.
 - Every behavior change should come with a spec. Run `bin/rspec` before
   considering a task done.
 
@@ -104,6 +101,5 @@ console manually on a fresh clone, run `bin/rails db:test:prepare` first.
 - Do not restructure the app, rename the module (`Newskvabbel`), or replace
   Authlogic/RSpec/SQLite/importmap.
 - Do not add gems, background-job infrastructure, or new frontend frameworks.
-- Do not modify or extend the legacy `test/` Minitest tree.
 - Do not "fix" unrelated style across the codebase; only touch what the task
   requires.
