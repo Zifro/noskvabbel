@@ -25,6 +25,10 @@ describe User do
     it { expect(user.attributes).to have_key('gender') }
     it { is_expected.to respond_to(:gender) }
     it { is_expected.to respond_to(:gender=) }
+
+    it { expect(user.attributes).to have_key('expenses_total') }
+    it { is_expected.to respond_to(:expenses_total) }
+    it { is_expected.to respond_to(:expenses_total=) }
   end
 
   describe 'associations' do
@@ -40,6 +44,38 @@ describe User do
 
       it { is_expected.to respond_to(:expenses) }
       it { expect(user.expenses.first).to be_an(Expense) }
+    end
+  end
+
+  describe 'expenses_total' do
+    it 'defaults to 0' do
+      expect(described_class.new.expenses_total).to eq(0)
+    end
+
+    describe '#update_expenses_total!' do
+      subject(:user) { create(:user, :with_expenses) }
+
+      before { user.update!(expenses_total: 0) }
+
+      it 'recalculates and persists the sum of the expenses of the user' do
+        expect { user.update_expenses_total! }
+          .to change { user.reload.expenses_total }
+          .from(0).to(user.expenses.sum(:amount))
+      end
+
+      it 'persists 0 when the user has no expenses' do
+        user.expenses.destroy_all
+        user.update_expenses_total!
+        expect(user.reload.expenses_total).to eq(0)
+      end
+
+      it 'persists the total without running validations (derived cache column)' do
+        user.expenses.destroy_all
+        user.username = nil # invalid in memory: must not prevent the cache update
+
+        expect { user.update_expenses_total! }.not_to raise_error
+        expect(user.reload.expenses_total).to eq(0)
+      end
     end
   end
 

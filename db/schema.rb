@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2022_09_15_200215) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_105200) do
   create_table "couples", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -25,6 +25,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_09_15_200215) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["amount", "label", "spent_on"], name: "index_expenses_on_amount_and_label_and_spent_on", unique: true
+    t.index ["spent_on"], name: "index_expenses_on_spent_on"
     t.index ["user_id"], name: "index_expenses_on_user_id"
   end
 
@@ -45,6 +46,7 @@ ActiveRecord::Schema[8.1].define(version: 2022_09_15_200215) do
     t.string "gender", limit: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "expenses_total", precision: 10, scale: 2, default: "0.0"
     t.index ["couple_id"], name: "index_users_on_couple_id"
   end
 end

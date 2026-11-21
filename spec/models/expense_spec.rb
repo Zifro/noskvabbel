@@ -89,4 +89,56 @@ RSpec.describe Expense do
       it { expect(doppelganger.errors[:amount]).to match_array('This expense has already been recorded') }
     end
   end
+
+  describe 'expenses_total synchronization' do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+
+    it 'sets the expenses_total of the user when an expense is created' do
+      create(:expense, user: user, created_by: user, amount: 12.34)
+
+      expect(user.reload.expenses_total).to eq(12.34)
+    end
+
+    it 'sums all the expenses of the user' do
+      create(:expense, user: user, created_by: user, amount: 10)
+      create(:expense, user: user, created_by: user, amount: 2.5)
+
+      expect(user.reload.expenses_total).to eq(12.5)
+    end
+
+    it 'updates the expenses_total of the user when the amount is updated' do
+      expense = create(:expense, user: user, created_by: user, amount: 10)
+
+      expense.update!(amount: 25.5)
+
+      expect(user.reload.expenses_total).to eq(25.5)
+    end
+
+    it 'updates the expenses_total of both users when the expense is moved to another user' do
+      expense = create(:expense, user: user, created_by: user, amount: 10)
+
+      expense.update!(user: other_user)
+
+      expect(user.reload.expenses_total).to eq(0)
+      expect(other_user.reload.expenses_total).to eq(10)
+    end
+
+    it 'updates the expenses_total of the user when the expense is destroyed' do
+      expense = create(:expense, user: user, created_by: user, amount: 10)
+
+      expense.destroy
+
+      expect(user.reload.expenses_total).to eq(0)
+    end
+
+    it 'does not recalculate when only an unrelated attribute (e.g. the label) changes' do
+      expense = create(:expense, user: user, created_by: user, amount: 10)
+      user.update!(expenses_total: 999) # sentinel: overwritten if the callback fires
+
+      expense.update!(label: 'A brand new label')
+
+      expect(user.reload.expenses_total).to eq(999)
+    end
+  end
 end
