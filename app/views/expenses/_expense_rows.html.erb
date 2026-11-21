@@ -1,0 +1,13 @@
+<% expenses.each do |exp| %>
+	<tr id="expense_<%= exp.id %>" class="<%= gender(exp.user) %>">
+		<td><%= exp.spent_on %></td>
+		<td><%= exp.label %></td>
+		<td><%= number_to_currency(exp.amount, :unit => '€ ', :separator => ',', :delimiter => ' ') %></td>
+		<td><%= exp.user.username %></td>
+		<td>
+			<%= link_to t('expenses.index.details'), expense_path(exp) %>,
+			<%= link_to t('expenses.index.edit'), edit_expense_path(exp) %> or
+			<%= link_to t('expenses.index.delete'), exp, :data => { :turbo_method => :delete, :turbo_confirm => t('expenses.index.confirm_delete') } %>
+		</td>
+	</tr>
+<% end %>

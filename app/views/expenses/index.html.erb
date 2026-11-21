@@ -3,7 +3,6 @@
 
 <%= link_to t('.record_new_expense'), new_expense_path %>
 
-<% if @expenses.any? %>
 <table id="expenses" class="table">
 	<tr>
 		<th><%= t('.when') %></th>
@@ -18,20 +17,14 @@
 	<tr class="balance user_2" id="balance_user_2">
 		<%= render :partial => 'balance_user_2' %>
 	</tr>
-	<% @expenses.each do |exp| %>
-	<tr id="expense_<%= exp.id %>" class="<%= gender(exp.user) %>">
-		<td><%= exp.spent_on %></td>
-		<td><%= exp.label %></td>
-		<td><%= number_to_currency(exp.amount, :unit => '€ ', :separator => ',', :delimiter => ' ') %></td>
-		<td><%= exp.user.username %></td>
-		<td>
-			<%= link_to t('.details'), expense_path(exp) %>,
-			<%= link_to t('.edit'), edit_expense_path(exp) %> or
-			<%= link_to t('.delete'), exp, :data => { :turbo_method => :delete, :turbo_confirm => t('.confirm_delete') } %>
-		</td>
-	</tr>
-	<% end %>
-<% else %>
+	<tbody id="expenses_rows">
+		<%= render partial: 'expense_rows', locals: { expenses: @expenses } %>
+	</tbody>
+</table>
+
+<%= render partial: 'load_more_buttons' %>
+
+<% if @expenses.empty? && @all_expenses_loaded %>
 	<%= t('.none_yet') %>
 	<%= link_to t('.new_one'), new_expense_path %> ?
 <% end %>

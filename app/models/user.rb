@@ -10,4 +10,9 @@ class User < ApplicationRecord
 
   validates :username, uniqueness: { case_sensitive: false }
   validates :gender, inclusion: { in: %w[M F], allow_nil: true }
+
+  # Recalculates and persists the cached total of this user's expenses
+  def update_expenses_total!
+    update!(expenses_total: expenses.sum(:amount))
+  end
 end

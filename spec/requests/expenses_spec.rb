@@ -20,6 +20,11 @@ RSpec.describe 'Expenses', type: :request do
       get expenses_path
       expect(response).to redirect_to(login_path)
     end
+
+    it 'redirects anonymous visitors away from the load_more action' do
+      get load_more_expenses_path(mode: '30_days', before: Time.zone.today)
+      expect(response).to redirect_to(login_path)
+    end
   end
 
   describe 'when logged in as a user in a couple' do
@@ -48,6 +53,154 @@ RSpec.describe 'Expenses', type: :request do
           %(<a data-turbo-method="delete" data-turbo-confirm="Are you sure?" href="#{expense_path(expense)}">Delete</a>)
         )
         expect(response.body).not_to include('data-confirm')
+      end
+
+      it 'only lists the expenses of the last 30 days, but balances all expenses' do
+        balanced_user = user.couple.users.first
+        create(:expense, user: balanced_user, created_by: user, label: 'Recent purchase',
+                         spent_on: today, amount: 10)
+        create(:expense, user: balanced_user, created_by: user, label: 'Ancient purchase',
+                         spent_on: 45.days.ago.to_date, amount: 20)
+
+        get expenses_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('Recent purchase')
+        expect(response.body).not_to include('Ancient purchase')
+        expect(response.body).to include('€ 30,00')
+      end
+
+      it 'displays the cached expenses_total of the users instead of recalculating it' do
+        balanced_user = user.couple.users.first
+        create(:expense, user: balanced_user, created_by: user, label: 'Recent purchase', spent_on: today, amount: 10)
+        balanced_user.update!(expenses_total: 999.99)
+
+        get expenses_path
+
+        balance_row = response.body[%r{<tr class="balance" id="balance_user_1">.*?</tr>}m]
+        expect(balance_row).to include('€ 999,99')
+        expect(balance_row).not_to include('€ 10,00')
+      end
+
+      it 'shows the three lazy-loading buttons with the year of the oldest displayed expense' do
+        create(:expense, user: user, created_by: user, label: 'Displayed',
+                         spent_on: 10.days.ago.to_date)
+        create(:expense, user: user, created_by: user, label: 'Older',
+                         spent_on: 60.days.ago.to_date)
+
+        get expenses_path
+
+        expect(response.body).to include('Load 30 more days')
+        expect(response.body).to include("Load the rest of #{10.days.ago.year}")
+        expect(response.body).to include('Load all remaining expenses')
+        expect(response.body).to include("before=#{10.days.ago.to_date}")
+      end
+
+      it 'hides the lazy-loading buttons when every expense is within the last 30 days' do
+        create(:expense, user: user, created_by: user, label: 'Recent', spent_on: today)
+
+        get expenses_path
+
+        expect(response.body).to include('Recent')
+        expect(response.body).not_to include('Load 30 more days')
+        expect(response.body).not_to include('Load the rest of')
+        expect(response.body).not_to include('Load all remaining expenses')
+      end
+
+      it 'still shows the balance lines and the buttons when no expense falls within the last 30 days' do
+        create(:expense, user: user, created_by: user, label: 'Old only', spent_on: 100.days.ago.to_date)
+
+        get expenses_path
+
+        expect(response.body).not_to include('Old only')
+        expect(response.body).to include('balance_user_1')
+        expect(response.body).to include('Load 30 more days')
+      end
+
+      it 'shows the empty-state message when the couple has no expense at all' do
+        get expenses_path
+
+        expect(response.body).to include('No expenses yet')
+        expect(response.body).not_to include('Load 30 more days')
+      end
+    end
+
+    describe 'GET /expenses/load_more' do
+      let(:turbo_stream_headers) { { 'Accept' => 'text/vnd.turbo-stream.html' } }
+
+      it 'appends the next 30 days of expenses to the table as a Turbo Stream' do
+        displayed = create(:expense, user: user, created_by: user, label: 'Displayed', spent_on: today - 5)
+        in_next_chunk = create(:expense, user: user, created_by: user, label: 'Next chunk', spent_on: today - 20)
+        create(:expense, user: user, created_by: user, label: 'Too old', spent_on: today - 50)
+
+        get load_more_expenses_path(mode: '30_days', before: displayed.spent_on), headers: turbo_stream_headers
+
+        expect(response).to have_http_status(:ok)
+        expect(response.media_type).to eq('text/vnd.turbo-stream.html')
+        expect(response.body).to include('action="append"')
+        expect(response.body).to include('target="expenses_rows"')
+        expect(response.body).to include('Next chunk')
+        expect(response.body).not_to include('Too old')
+        expect(response.body).not_to include('Displayed')
+        expect(response.body).to include("before=#{in_next_chunk.spent_on}")
+        expect(response.body).to include('Load 30 more days')
+      end
+
+      it 'appends the remaining expenses of the year of the oldest displayed expense with mode rest_of_year' do
+        boundary = Date.new(2024, 6, 15)
+        create(:expense, user: user, created_by: user, label: 'Same year earlier', spent_on: Date.new(2024, 6, 1))
+        create(:expense, user: user, created_by: user, label: 'Same year start', spent_on: Date.new(2024, 1, 1))
+        create(:expense, user: user, created_by: user, label: 'Previous year', spent_on: Date.new(2023, 12, 31))
+        create(:expense, user: user, created_by: user, label: 'After boundary', spent_on: Date.new(2024, 6, 20))
+
+        get load_more_expenses_path(mode: 'rest_of_year', before: boundary), headers: turbo_stream_headers
+
+        expect(response.body).to include('Same year earlier')
+        expect(response.body).to include('Same year start')
+        expect(response.body).not_to include('Previous year')
+        expect(response.body).not_to include('After boundary')
+      end
+
+      it 'appends every remaining expense with mode all_remaining and then hides the buttons' do
+        boundary = Date.new(2024, 6, 15)
+        create(:expense, user: user, created_by: user, label: 'Same year', spent_on: Date.new(2024, 1, 1))
+        create(:expense, user: user, created_by: user, label: 'Way back', spent_on: Date.new(2019, 3, 3))
+
+        get load_more_expenses_path(mode: 'all_remaining', before: boundary), headers: turbo_stream_headers
+
+        expect(response.body).to include('Same year')
+        expect(response.body).to include('Way back')
+        expect(response.body).to include('action="replace"')
+        expect(response.body).to include('target="load_more_buttons"')
+        expect(response.body).not_to include('Load 30 more days')
+      end
+
+      it 'never appends expenses belonging to another couple' do
+        create(:expense, label: 'Foreign expense', spent_on: Date.new(2020, 1, 1))
+
+        get load_more_expenses_path(mode: 'all_remaining', before: today), headers: turbo_stream_headers
+
+        expect(response.body).not_to include('Foreign expense')
+      end
+
+      it 'answers 400 for an unknown mode' do
+        get load_more_expenses_path(mode: 'nope', before: today), headers: turbo_stream_headers
+
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it 'answers 400 for a missing or invalid before date' do
+        get load_more_expenses_path(mode: '30_days'), headers: turbo_stream_headers
+        expect(response).to have_http_status(:bad_request)
+
+        get load_more_expenses_path(mode: '30_days', before: 'not-a-date'), headers: turbo_stream_headers
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it 'redirects to the main page for non Turbo Stream requests' do
+        get load_more_expenses_path(mode: 'all_remaining', before: today)
+
+        expect(response).to redirect_to(expenses_path)
       end
     end
 
