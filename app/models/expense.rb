@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class Expense < ApplicationRecord
-  default_scope { order('spent_on DESC, id desc') }
+  default_scope { order(spent_on: :desc, id: :desc) }
 
   belongs_to :user
   belongs_to :created_by, class_name: 'User'
 
-  validates :user, :created_by, :label, :spent_on, presence: true
+  validates :label, :spent_on, presence: true
   validates :amount, presence: true,
                      numericality: { greater_than_or_equal_to: 0.01 },
-                     uniqueness: { scope: %i[label spent_on], message: 'This expense has already been recorded' }
+                     uniqueness: { scope: %i[label spent_on] }
 
   after_destroy :sync_users_expenses_total
   after_save :sync_users_expenses_total, if: :amount_or_user_changed?

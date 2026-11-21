@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 protected
 
   def verify_the_user_is_logged_in
-    redirect_to login_path, notice: 'Please login first' if @user_session.new_record?
+    redirect_to login_path, notice: t('please_login_first') if @user_session.new_record?
   end
 
 private
@@ -28,6 +28,6 @@ private
   end
 
   def load_user_from_session
-    @user_session = (current_user || UserSession.new)
+    @user_session = current_user || UserSession.new
   end
 end

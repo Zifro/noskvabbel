@@ -8,9 +8,7 @@ ENV['RAILS_ENV'] ||= 'test'
 # happens while the application boots. On a fresh clone, prepare the test
 # database BEFORE loading the application (like `bin/setup` does) so that
 # acts_as_authentic gets its columns.
-unless File.exist?(File.expand_path('../db/test.sqlite3', __dir__))
-  system('bin/rails db:test:prepare', exception: true)
-end
+system('bin/rails db:test:prepare', exception: true) unless File.exist?(File.expand_path('../db/test.sqlite3', __dir__))
 
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production

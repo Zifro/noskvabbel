@@ -12,10 +12,10 @@
 		<th><%= t('.actions') %></th>
 	</tr>
 	<tr class="balance" id="balance_user_1">
-		<%= render :partial => 'balance_user_1' %>
+		<%= render partial: 'balance_user_1' %>
 	</tr>
 	<tr class="balance user_2" id="balance_user_2">
-		<%= render :partial => 'balance_user_2' %>
+		<%= render partial: 'balance_user_2' %>
 	</tr>
 	<tbody id="expenses_rows">
 		<%= render partial: 'expense_rows', locals: { expenses: @expenses } %>

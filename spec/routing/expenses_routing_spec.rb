@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'routes for Expenses', type: :routing do
+RSpec.describe 'routes for Expenses' do
   it 'routes GET /expenses to expenses#index' do
     expect(get: '/expenses').to route_to('expenses#index')
   end

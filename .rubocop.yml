@@ -57,6 +57,9 @@ Rails/TimeZone:
 Layout/AccessModifierIndentation:
   EnforcedStyle: outdent
 
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_first_argument
+
 Layout/EndOfLine:
   Enabled: false
 
@@ -66,6 +69,7 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - config/**/*
+    - lib/tasks/**/*
 
 Metrics/ClassLength:
   Max: 200
@@ -99,6 +103,9 @@ RSpec/ExampleLength:
 
 RSpec/ImplicitSubject:
   EnforcedStyle: require_implicit
+
+RSpec/MultipleExpectations:
+  Max: 9
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

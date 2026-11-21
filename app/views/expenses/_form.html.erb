@@ -5,7 +5,7 @@
   <br/>
 	<%= f.label :user_id, t('.who') %> <%= f.select :user_id, options_for_select(current_user) %>
 	<br/>
-  <%= f.label :spent_on, t('.date') %> <%= f.date_select :spent_on, :order => [:year, :month, :day] %>
+  <%= f.label :spent_on, t('.date') %> <%= f.date_select :spent_on, order: %i[year month day] %>
   <br/>
   <%= f.submit t("expenses.#{params[:action]}.record_button") %> <%= t("expenses.#{params[:action]}.or") %> <%= link_to t("expenses.#{params[:action]}.cancel"), expenses_path %>
 <% end %>

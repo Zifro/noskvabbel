@@ -3,20 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe ExpensesHelper do
-  class Klass
-    include ExpensesHelper
-  end
+  subject(:options) { klass.new.options_for_select(user) }
 
-  subject(:options) { Klass.new.options_for_select(user) }
-
-  before { create_list(:couple, rand(2..5)) }
-
+  let(:klass) { Class.new { include ExpensesHelper } }
   let(:user) { User.first }
   let(:expected_options) do
     user.couple.users.map do |user|
       [user.username, user.id]
     end
   end
+
+  before { create_list(:couple, rand(2..5)) }
 
   it { is_expected.to match_array(expected_options) }
 end

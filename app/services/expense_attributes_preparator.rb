@@ -19,6 +19,6 @@ private
   end
 
   def id_for_username(username)
-    @username_to_id_mapping[username] ||= User.find_by_username(username)&.id
+    @username_to_id_mapping[username] ||= User.find_by(username: username)&.id
   end
 end

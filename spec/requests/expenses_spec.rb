@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Expenses', type: :request do
+RSpec.describe 'Expenses' do
   let(:password) { 'curiou5 passw0rd' }
   let(:user) { create(:user, :in_couple, password: password) }
   let(:today) { Time.zone.today }

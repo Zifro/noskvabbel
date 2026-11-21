@@ -31,6 +31,6 @@ class UserSessionsController < ApplicationController
 private
 
   def user_session_params
-    params.require(:user_session).permit(:username, :password).to_h
+    params.expect(user_session: %i[username password]).to_h
   end
 end

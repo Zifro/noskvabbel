@@ -33,6 +33,18 @@ en:
 
   successfully_logged_in: "Successfully logged in"
   successfully_logged_out: "Successfully logged out"
+  please_login_first: "Please login first"
+  expense_successfully_recorded: "Expense successfully recorded"
+  expense_successfully_updated: "Expense successfully updated"
+  expense_successfully_deleted: "Expense successfully deleted"
+
+  activerecord:
+    errors:
+      models:
+        expense:
+          attributes:
+            amount:
+              taken: "This expense has already been recorded"
 
   layouts:
 

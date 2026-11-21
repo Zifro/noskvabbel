@@ -16,7 +16,7 @@
 					<ul class="nav">
 						<% if current_user %>
 					  <li>
-					    <%= link_to 'N&oslash;skvabbel'.html_safe, '/', :class => "brand" %>
+					    <%= link_to 'N&oslash;skvabbel'.html_safe, '/', class: 'brand' %>
 					  </li>
 
 						<li><%= t('.hi') %><span class="<%= gender(current_user) %>"> <%= current_user.username %>!</span></li>
@@ -33,7 +33,7 @@
 						<li><%= link_to t('.logout'), logout_path %></li>
 						<% else %>
 						<li>
-							<%= link_to 'N&oslash;skvabbel'.html_safe, '/', :class => "brand" %>
+							<%= link_to 'N&oslash;skvabbel'.html_safe, '/', class: 'brand' %>
 						</li>
 						<li><%= link_to t('.tagline'), '/' %></li>
 						<% end %>
@@ -42,7 +42,7 @@
 		  </div>
 		</div>
 
-		<%= render :partial => 'shared/flash'%>
+		<%= render partial: 'shared/flash'%>
 
 		<div class="container">
 			<div class="row-fluid">

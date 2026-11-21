@@ -1,6 +1,6 @@
 <div class="span5 offset3">
 
-	<%= form_for(@user_session, :html => { :class => "form-horizontal" }) do |f| %>
+	<%= form_for(@user_session, html: { class: 'form-horizontal' }) do |f| %>
 		<% if @user_session.errors.any? %>
 		<div id="errors">
 			<%= t('.the_following_errors___no_login') %>
@@ -15,19 +15,19 @@
 		<fieldset>
 			<legend><%= t('.login') %></legend>
 	    <div class="control-group">
-	  		<%= f.label t('.username'), :class => "control-label", :for => :user_session_username %>
+	  		<%= f.label t('.username'), class: 'control-label', for: :user_session_username %>
 				<div class="controls">
 					<%= f.text_field :username %>
 				</div>
 			</div>
 			<div class="control-group">
-	  		<%= f.label t('.password'), :class => "control-label", :for => :user_session_password %>
+	  		<%= f.label t('.password'), class: 'control-label', for: :user_session_password %>
 				<div class="controls">
 					<%= f.password_field :password %>
 				</div>
 			</div>
 			<div class="form-actions">
-	  		<%= f.submit t('.login_button'), :class => "btn btn-primary" %>
+	  		<%= f.submit t('.login_button'), class: 'btn btn-primary' %>
       </div>
 		</fieldset>
 	<% end %>

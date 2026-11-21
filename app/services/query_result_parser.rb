@@ -30,7 +30,8 @@ class QueryResultParser
   private
 
     def verify_file_path_exists!(file_path)
-      return if File.exists?(file_path)
+      return if File.exist?(file_path)
+
       raise(ArgumentError, "File #{file_path} does not exist")
     end
 

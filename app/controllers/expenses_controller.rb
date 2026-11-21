@@ -47,7 +47,7 @@ class ExpensesController < ApplicationController
 
   # Displays an expense
   def show
-    @expense = Expense.find(params[:id])
+    @expense = Expense.find(params.expect(:id))
     # TODO: add a filter so that only expenses linked to the couple of the user can be displayed
   end
 
@@ -56,29 +56,29 @@ class ExpensesController < ApplicationController
     @expense = Expense.new(user: current_user)
   end
 
+  # Displays a form for the user to update the expense passed as parameter
+  def edit
+    @expense = Expense.find(params.expect(:id))
+    # TODO: add a filter so that only expenses linked to the couple of the user can be edited
+  end
+
   # Creates a new expense
   def create
     @expense = Expense.new(expense_params)
     @expense.created_by = current_user
     if @expense.save
-      redirect_to(expenses_path, notice: 'Expense successfully recorded')
+      redirect_to(expenses_path, notice: t('expense_successfully_recorded'))
     else
       render new_expense_path(@expense)
     end
   end
 
-  # Displays a form for the user to update the expense passed as parameter
-  def edit
-    @expense = Expense.find(params[:id])
-    # TODO: add a filter so that only expenses linked to the couple of the user can be edited
-  end
-
   # Updates an expenses from what the user has put into params[:expenses]
   def update
-    @expense = Expense.find(params[:id])
+    @expense = Expense.find(params.expect(:id))
     # TODO: add a filter so that only expenses linked to the couple of the user can be updated
     if @expense.update(expense_params)
-      redirect_to(expenses_path, notice: 'Expense successfully updated')
+      redirect_to(expenses_path, notice: t('expense_successfully_updated'))
     else
       render action: :edit
     end
@@ -86,9 +86,9 @@ class ExpensesController < ApplicationController
 
   # Destroys an expense from what the user has passed as parameter
   def destroy
-    @expense = current_user.couple.expenses.find(params[:id])
+    @expense = current_user.couple.expenses.find(params.expect(:id))
     if @expense.destroy
-      redirect_to(expenses_path, notice: 'Expense successfully deleted')
+      redirect_to(expenses_path, notice: t('expense_successfully_deleted'))
     else
       redirect_to(expenses_path, error: 'Expense could not be deleted')
     end
@@ -173,13 +173,13 @@ private
   end
 
   def expense_params
-    params.require(:expense).permit(
-      :label,
-      :amount,
-      :user_id,
-      :"spent_on(1i)",
-      :"spent_on(2i)",
-      :"spent_on(3i)"
+    params.expect(
+      expense: %i[label
+                  amount
+                  user_id
+                  spent_on(1i)
+                  spent_on(2i)
+                  spent_on(3i)]
     ).to_h
   end
 end

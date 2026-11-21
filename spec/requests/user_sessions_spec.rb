@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'UserSessions', type: :request do
+RSpec.describe 'UserSessions' do
   let(:password) { 'curiou5 passw0rd' }
   let(:user) { create(:user, :in_couple, password: password) }
 
