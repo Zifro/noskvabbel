@@ -3,12 +3,37 @@
 class ExpensesController < ApplicationController
   include ActionView::Helpers::NumberHelper
 
+  # Number of days of expenses loaded at once on the main page and by the
+  # "Load 30 more days" button
+  DAYS_PER_LOAD = 30
+
   before_action :verify_the_user_is_in_couple
 
-  # Lists the expenses recorded for the couple of the user
+  # Lists the balance lines and the expenses of the last 30 days recorded for
+  # the couple of the user; older expenses are lazy-loaded via #load_more
   def index
-    @expenses = current_user.couple.expenses.includes(:user)
+    @expenses = current_user.couple.expenses.includes(:user).where(spent_on: initial_window_start..)
     load_users
+    prepare_lazy_loading
+  end
+
+  # Appends more expenses to the table of the main page, as a Turbo Stream:
+  # - mode=30_days: the 30 days before the oldest expense currently displayed
+  # - mode=rest_of_year: the rest of the year of the oldest expense displayed
+  # - mode=all_remaining: every older expense of the couple
+  # The `before` param is the spent_on date of the oldest expense displayed.
+  def load_more
+    boundary = parse_boundary_date
+    return head :bad_request unless boundary
+
+    @expenses = expenses_before(boundary)
+    return head :bad_request if @expenses.nil?
+
+    prepare_lazy_loading(boundary)
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to expenses_path }
+    end
   end
 
   # Displays an expense
@@ -68,11 +93,36 @@ private
 
   def load_users
     @users = current_user.couple.users.collect do |user|
-      total = user.expenses.inject(0) { |sum, e| sum + e.amount }
       {
         username: user.username,
-        total: number_to_currency(total, unit: '€ ', separator: ',', delimiter: ' ')
+        total: number_to_currency(user.expenses_total, unit: '€ ', separator: ',', delimiter: ' ')
       }
+    end
+  end
+
+  def initial_window_start
+    DAYS_PER_LOAD.days.ago.to_date
+  end
+
+  # Sets @oldest_expense_date (date of the oldest expense displayed, used as
+  # the `before` boundary of the lazy-loading buttons) and @all_expenses_loaded
+  def prepare_lazy_loading(fallback_boundary = nil)
+    @oldest_expense_date = @expenses.map(&:spent_on).min || fallback_boundary || initial_window_start
+    @all_expenses_loaded = current_user.couple.expenses.where(spent_on: ...@oldest_expense_date).none?
+  end
+
+  def parse_boundary_date
+    Date.iso8601(params[:before].to_s)
+  rescue Date::Error
+    nil
+  end
+
+  def expenses_before(boundary)
+    scope = current_user.couple.expenses.includes(:user).where(spent_on: ...boundary)
+    case params[:mode]
+    when '30_days' then scope.where(spent_on: (boundary - DAYS_PER_LOAD)...boundary)
+    when 'rest_of_year' then scope.where(spent_on: Date.new(boundary.year, 1, 1)...boundary)
+    when 'all_remaining' then scope
     end
   end
 

@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   get 'account', to: 'users#edit', as: :account
 
   resources :user_sessions
-  resources :expenses
+  resources :expenses do
+    collection do
+      get :load_more
+    end
+  end
 
   root to: 'expenses#index'
 end

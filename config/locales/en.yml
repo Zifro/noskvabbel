@@ -73,6 +73,9 @@ en:
       confirm_delete: "Are you sure?"
       none_yet: "No expenses yet, why not"
       new_one: "create a new one"
+      load_30_more_days: "Load 30 more days"
+      load_rest_of_year: "Load the rest of %{year}"
+      load_all_remaining: "Load all remaining expenses"
 
 
 
