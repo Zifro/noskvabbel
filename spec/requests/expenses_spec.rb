@@ -93,7 +93,12 @@ RSpec.describe 'Expenses', type: :request do
         expect(response.body).to include('Load 30 more days')
         expect(response.body).to include("Load the rest of #{10.days.ago.year}")
         expect(response.body).to include('Load all remaining expenses')
-        expect(response.body).to include("before=#{10.days.ago.to_date}")
+        # the "30 more days" link is anchored on the oldest theoretical date of the
+        # loaded window (today - 30 days), not on the actual oldest expense
+        expect(response.body).to include(
+          load_more_expenses_path(mode: '30_days', before: 30.days.ago.to_date, oldest: 10.days.ago.to_date)
+            .gsub('&', '&amp;')
+        )
       end
 
       it 'hides the lazy-loading buttons when every expense is within the last 30 days' do
@@ -128,12 +133,14 @@ RSpec.describe 'Expenses', type: :request do
     describe 'GET /expenses/load_more' do
       let(:turbo_stream_headers) { { 'Accept' => 'text/vnd.turbo-stream.html' } }
 
-      it 'appends the next 30 days of expenses to the table as a Turbo Stream' do
+      it 'appends the next 30-day window to the table as a Turbo Stream' do
         displayed = create(:expense, user: user, created_by: user, label: 'Displayed', spent_on: today - 5)
-        in_next_chunk = create(:expense, user: user, created_by: user, label: 'Next chunk', spent_on: today - 20)
-        create(:expense, user: user, created_by: user, label: 'Too old', spent_on: today - 50)
+        in_next_chunk = create(:expense, user: user, created_by: user, label: 'Next chunk', spent_on: today - 40)
+        create(:expense, user: user, created_by: user, label: 'Too old', spent_on: today - 80)
 
-        get load_more_expenses_path(mode: '30_days', before: displayed.spent_on), headers: turbo_stream_headers
+        edge = 30.days.ago.to_date
+        get load_more_expenses_path(mode: '30_days', before: edge, oldest: displayed.spent_on),
+            headers: turbo_stream_headers
 
         expect(response).to have_http_status(:ok)
         expect(response.media_type).to eq('text/vnd.turbo-stream.html')
@@ -142,8 +149,32 @@ RSpec.describe 'Expenses', type: :request do
         expect(response.body).to include('Next chunk')
         expect(response.body).not_to include('Too old')
         expect(response.body).not_to include('Displayed')
-        expect(response.body).to include("before=#{in_next_chunk.spent_on}")
+        # the "30 more days" link now points 30 days before the current theoretical edge
+        expect(response.body).to include(
+          load_more_expenses_path(mode: '30_days', before: edge - 30, oldest: in_next_chunk.spent_on)
+            .gsub('&', '&amp;')
+        )
         expect(response.body).to include('Load 30 more days')
+      end
+
+      it 'keeps walking the 30-day window backwards even across gaps wider than 30 days' do
+        create(:expense, user: user, created_by: user, label: 'Latest expense', spent_on: today - 13)
+        create(:expense, user: user, created_by: user, label: 'After a long gap', spent_on: today - 72)
+
+        edge = 30.days.ago.to_date
+        oldest = 13.days.ago.to_date
+
+        # first 30-day window before the edge contains no expense (the gap is wider
+        # than 30 days), but the link must still move 30 days backwards
+        get load_more_expenses_path(mode: '30_days', before: edge, oldest: oldest), headers: turbo_stream_headers
+        expect(response.body).not_to include('After a long gap')
+        expect(response.body).to include(
+          load_more_expenses_path(mode: '30_days', before: edge - 30, oldest: oldest).gsub('&', '&amp;')
+        )
+
+        # the next window reaches the expense after the gap
+        get load_more_expenses_path(mode: '30_days', before: edge - 30, oldest: oldest), headers: turbo_stream_headers
+        expect(response.body).to include('After a long gap')
       end
 
       it 'appends the remaining expenses of the year of the oldest displayed expense with mode rest_of_year' do
