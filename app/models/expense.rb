@@ -12,13 +12,19 @@ class Expense < ApplicationRecord
                      uniqueness: { scope: %i[label spent_on], message: 'This expense has already been recorded' }
 
   after_destroy :sync_users_expenses_total
-  after_save :sync_users_expenses_total
+  after_save :sync_users_expenses_total, if: :amount_or_user_changed?
 
   def spent_on
     attributes['spent_on'] ||= Time.zone.today
   end
 
 private
+
+  # The cached total only depends on the amount and the owner of the expense;
+  # on create both are "changed", so the callback still fires then
+  def amount_or_user_changed?
+    saved_change_to_amount? || saved_change_to_user_id?
+  end
 
   # Keeps the cached expenses_total of the affected users in sync
   def sync_users_expenses_total

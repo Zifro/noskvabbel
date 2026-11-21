@@ -63,9 +63,17 @@ describe User do
           .from(0).to(user.expenses.sum(:amount))
       end
 
-      it 'persists 0 when the user has no expense' do
+      it 'persists 0 when the user has no expenses' do
         user.expenses.destroy_all
         user.update_expenses_total!
+        expect(user.reload.expenses_total).to eq(0)
+      end
+
+      it 'persists the total without running validations (derived cache column)' do
+        user.expenses.destroy_all
+        user.username = nil # invalid in memory: must not prevent the cache update
+
+        expect { user.update_expenses_total! }.not_to raise_error
         expect(user.reload.expenses_total).to eq(0)
       end
     end

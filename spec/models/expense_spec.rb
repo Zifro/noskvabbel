@@ -131,5 +131,14 @@ RSpec.describe Expense do
 
       expect(user.reload.expenses_total).to eq(0)
     end
+
+    it 'does not recalculate when only an unrelated attribute (e.g. the label) changes' do
+      expense = create(:expense, user: user, created_by: user, amount: 10)
+      user.update!(expenses_total: 999) # sentinel: overwritten if the callback fires
+
+      expense.update!(label: 'A brand new label')
+
+      expect(user.reload.expenses_total).to eq(999)
+    end
   end
 end
