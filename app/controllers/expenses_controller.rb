@@ -13,7 +13,7 @@ class ExpensesController < ApplicationController
   # the couple of the user; older expenses are lazy-loaded via #load_more
   def index
     @oldest_theoretical_date = initial_window_start
-    @expenses = current_user.couple.expenses.includes(:user).where(spent_on: @oldest_theoretical_date..)
+    @expenses = couple_expenses.where(spent_on: @oldest_theoretical_date..)
     load_users
     prepare_lazy_loading
   end
@@ -23,20 +23,22 @@ class ExpensesController < ApplicationController
   #   date of the loaded window, so that the window keeps moving backwards by 30
   #   days per click even when expenses are more than 30 days apart (e.g. a
   #   month-long vacation with no expense)
-  # - mode=rest_of_year: the rest of the year of the oldest expense displayed
+  # - mode=rest_of_year: the not-yet-displayed expenses of year `year`; the button
+  #   then steps down to year-1, so that "Load the rest of 2026" becomes "Load the
+  #   rest of 2025", and so on, year after year
   # - mode=all_remaining: every older expense of the couple
-  # `oldest` is the actual spent_on date of the oldest expense displayed so far.
+  # `before` is the exclusive upper bound of the chunk to load, `oldest` the actual
+  # spent_on date of the oldest expense displayed so far, and `year` the year the
+  # rest_of_year button currently points at.
   def load_more
     boundary = parse_date_param(params[:before])
     oldest = parse_date_param(params[:oldest]) || boundary
     return head :bad_request unless boundary
 
-    @expenses, @oldest_theoretical_date = expenses_to_load(boundary)
+    @expenses, @oldest_theoretical_date, year = expenses_to_load(boundary)
     return head :bad_request if @expenses.nil?
 
-    @oldest_expense_date = @expenses.map(&:spent_on).min || oldest
-    @oldest_theoretical_date ||= @oldest_expense_date
-    @all_expenses_loaded = current_user.couple.expenses.where(spent_on: ...@oldest_expense_date).none?
+    prepare_lazy_loading_after_load(oldest, year)
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to expenses_path }
@@ -111,10 +113,11 @@ private
     DAYS_PER_LOAD.days.ago.to_date
   end
 
-  # Sets @oldest_expense_date (actual date of the oldest expense displayed, used
-  # for the year label of the lazy-loading buttons) and @all_expenses_loaded
+  # Sets @oldest_expense_date (actual date of the oldest expense displayed) and
+  # @all_expenses_loaded; @next_year_to_load starts at the year of that expense
   def prepare_lazy_loading
     @oldest_expense_date = @expenses.map(&:spent_on).min || @oldest_theoretical_date
+    @next_year_to_load = @oldest_expense_date.year
     @all_expenses_loaded = current_user.couple.expenses.where(spent_on: ...@oldest_expense_date).none?
   end
 
@@ -124,19 +127,49 @@ private
     nil
   end
 
+  def parse_year_param(value)
+    year = Integer(value, exception: false)
+    year if year && (1..9999).cover?(year)
+  end
+
+  def couple_expenses
+    current_user.couple.expenses.includes(:user)
+  end
+
+  # Sets the lazy-loading state after a load_more chunk: the actual oldest expense
+  # displayed, the theoretical window edge, the next year to load, and whether
+  # every expense of the couple is now displayed
+  def prepare_lazy_loading_after_load(oldest, year)
+    @oldest_expense_date = @expenses.map(&:spent_on).min || oldest
+    @oldest_theoretical_date ||= @oldest_expense_date
+    @next_year_to_load = [year || @oldest_expense_date.year, @oldest_expense_date.year].min
+    @all_expenses_loaded = current_user.couple.expenses.where(spent_on: ...@oldest_expense_date).none?
+  end
+
   # Returns the expenses to append for the requested mode, along with the new
   # oldest theoretical date of the loaded window (nil to recompute it from the
-  # oldest expense); nil expenses means the mode is unknown
+  # oldest expense) and the next year the rest_of_year button should point at
+  # (nil to keep it); nil expenses means the mode is unknown
   def expenses_to_load(boundary)
-    scope = current_user.couple.expenses.includes(:user)
     case params[:mode]
     when '30_days'
-      [scope.where(spent_on: (boundary - DAYS_PER_LOAD)...boundary), boundary - DAYS_PER_LOAD]
+      chunk = couple_expenses.where(spent_on: (boundary - DAYS_PER_LOAD)...boundary)
+      [chunk, boundary - DAYS_PER_LOAD, parse_year_param(params[:year])]
     when 'rest_of_year'
-      [scope.where(spent_on: Date.new(boundary.year, 1, 1)...boundary), nil]
+      rest_of_year_expenses(boundary)
     when 'all_remaining'
-      [scope.where(spent_on: ...boundary), nil]
+      [couple_expenses.where(spent_on: ...boundary), nil, parse_year_param(params[:year])]
     end
+  end
+
+  # The not-yet-displayed expenses of year `year` (defaults to the boundary's
+  # year), along with a nil window edge and the next year (year - 1) so that the
+  # rest_of_year button steps down one year per click
+  def rest_of_year_expenses(boundary)
+    year = parse_year_param(params[:year]) || boundary.year
+    chunk = couple_expenses.where(spent_on: Date.new(year, 1, 1)...Date.new(year + 1, 1, 1))
+                           .where(spent_on: ...boundary)
+    [chunk, nil, year - 1]
   end
 
   def expense_params

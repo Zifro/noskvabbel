@@ -95,10 +95,10 @@ RSpec.describe 'Expenses', type: :request do
         expect(response.body).to include('Load all remaining expenses')
         # the "30 more days" link is anchored on the oldest theoretical date of the
         # loaded window (today - 30 days), not on the actual oldest expense
-        expect(response.body).to include(
-          load_more_expenses_path(mode: '30_days', before: 30.days.ago.to_date, oldest: 10.days.ago.to_date)
-            .gsub('&', '&amp;')
-        )
+        expect(response.body).to include("before=#{30.days.ago.to_date}&amp;mode=30_days")
+        # the "rest of year" link points at the year of the oldest displayed expense
+        expect(response.body).to include("before=#{10.days.ago.to_date}&amp;mode=rest_of_year")
+        expect(response.body).to include("year=#{10.days.ago.year}")
       end
 
       it 'hides the lazy-loading buttons when every expense is within the last 30 days' do
@@ -135,7 +135,7 @@ RSpec.describe 'Expenses', type: :request do
 
       it 'appends the next 30-day window to the table as a Turbo Stream' do
         displayed = create(:expense, user: user, created_by: user, label: 'Displayed', spent_on: today - 5)
-        in_next_chunk = create(:expense, user: user, created_by: user, label: 'Next chunk', spent_on: today - 40)
+        create(:expense, user: user, created_by: user, label: 'Next chunk', spent_on: today - 40)
         create(:expense, user: user, created_by: user, label: 'Too old', spent_on: today - 80)
 
         edge = 30.days.ago.to_date
@@ -150,10 +150,7 @@ RSpec.describe 'Expenses', type: :request do
         expect(response.body).not_to include('Too old')
         expect(response.body).not_to include('Displayed')
         # the "30 more days" link now points 30 days before the current theoretical edge
-        expect(response.body).to include(
-          load_more_expenses_path(mode: '30_days', before: edge - 30, oldest: in_next_chunk.spent_on)
-            .gsub('&', '&amp;')
-        )
+        expect(response.body).to include("before=#{edge - 30}&amp;mode=30_days")
         expect(response.body).to include('Load 30 more days')
       end
 
@@ -168,28 +165,51 @@ RSpec.describe 'Expenses', type: :request do
         # than 30 days), but the link must still move 30 days backwards
         get load_more_expenses_path(mode: '30_days', before: edge, oldest: oldest), headers: turbo_stream_headers
         expect(response.body).not_to include('After a long gap')
-        expect(response.body).to include(
-          load_more_expenses_path(mode: '30_days', before: edge - 30, oldest: oldest).gsub('&', '&amp;')
-        )
+        expect(response.body).to include("before=#{edge - 30}&amp;mode=30_days")
 
         # the next window reaches the expense after the gap
         get load_more_expenses_path(mode: '30_days', before: edge - 30, oldest: oldest), headers: turbo_stream_headers
         expect(response.body).to include('After a long gap')
       end
 
-      it 'appends the remaining expenses of the year of the oldest displayed expense with mode rest_of_year' do
+      it 'appends the remaining expenses of the requested year with mode rest_of_year' do
         boundary = Date.new(2024, 6, 15)
         create(:expense, user: user, created_by: user, label: 'Same year earlier', spent_on: Date.new(2024, 6, 1))
         create(:expense, user: user, created_by: user, label: 'Same year start', spent_on: Date.new(2024, 1, 1))
         create(:expense, user: user, created_by: user, label: 'Previous year', spent_on: Date.new(2023, 12, 31))
         create(:expense, user: user, created_by: user, label: 'After boundary', spent_on: Date.new(2024, 6, 20))
 
-        get load_more_expenses_path(mode: 'rest_of_year', before: boundary), headers: turbo_stream_headers
+        get load_more_expenses_path(mode: 'rest_of_year', before: boundary, year: 2024), headers: turbo_stream_headers
 
         expect(response.body).to include('Same year earlier')
         expect(response.body).to include('Same year start')
         expect(response.body).not_to include('Previous year')
         expect(response.body).not_to include('After boundary')
+        # the button now points at the previous year
+        expect(response.body).to include('Load the rest of 2023')
+      end
+
+      it 'steps the rest-of-year button down one year per click and loads each year' do
+        create(:expense, user: user, created_by: user, label: 'In 2026', spent_on: Date.new(2026, 11, 8))
+        create(:expense, user: user, created_by: user, label: 'Rest of 2026', spent_on: Date.new(2026, 1, 21))
+        create(:expense, user: user, created_by: user, label: 'All of 2025', spent_on: Date.new(2025, 6, 15))
+        create(:expense, user: user, created_by: user, label: 'All of 2024', spent_on: Date.new(2024, 3, 3))
+
+        get load_more_expenses_path(mode: 'rest_of_year', before: Date.new(2026, 11, 8), year: 2026),
+            headers: turbo_stream_headers
+        expect(response.body).to include('Rest of 2026')
+        expect(response.body).not_to include('All of 2025')
+        expect(response.body).to include('Load the rest of 2025')
+
+        get load_more_expenses_path(mode: 'rest_of_year', before: Date.new(2026, 1, 21), year: 2025),
+            headers: turbo_stream_headers
+        expect(response.body).to include('All of 2025')
+        expect(response.body).not_to include('All of 2024')
+        expect(response.body).to include('Load the rest of 2024')
+
+        get load_more_expenses_path(mode: 'rest_of_year', before: Date.new(2025, 6, 15), year: 2024),
+            headers: turbo_stream_headers
+        expect(response.body).to include('All of 2024')
       end
 
       it 'appends every remaining expense with mode all_remaining and then hides the buttons' do
