@@ -14,6 +14,11 @@ module Newskvabbel
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
+    # The vendored Tailwind CSS 4 build (app/assets/stylesheets/tailwind-daisyui.css)
+    # uses modern CSS (range media queries, oklch, ...) that libsass cannot parse,
+    # so disable the default sassc CSS compressor and serve the file as-is.
+    config.assets.css_compressor = nil
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

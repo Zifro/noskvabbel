@@ -55,6 +55,7 @@ en:
       not_in_couple_yet: "Not in couple yet? Don't worry."
       account: "Account"
       logout: "Logout"
+      menu: "Menu"
       tagline: "Sharing expenses in a couple should be very easy"
 
   user_sessions:

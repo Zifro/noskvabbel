@@ -49,9 +49,10 @@ RSpec.describe 'Expenses' do
 
         get expenses_path
 
-        expect(response.body).to include(
-          %(<a data-turbo-method="delete" data-turbo-confirm="Are you sure?" href="#{expense_path(expense)}">Delete</a>)
-        )
+        delete_link = <<~HTML
+          <a class="btn btn-ghost btn-xs text-error" data-turbo-method="delete" data-turbo-confirm="Are you sure?" href="#{expense_path(expense)}">Delete</a>
+        HTML
+        expect(response.body).to include(delete_link)
         expect(response.body).not_to include('data-confirm')
       end
 
@@ -77,9 +78,11 @@ RSpec.describe 'Expenses' do
 
         get expenses_path
 
-        balance_row = response.body[%r{<tr class="balance" id="balance_user_1">.*?</tr>}m]
-        expect(balance_row).to include('€ 999,99')
-        expect(balance_row).not_to include('€ 10,00')
+        stat_pattern = <<~REGEX
+          <div class="stat-title[^"]*">#{Regexp.escape(balanced_user.username)}</div>\\s*<div class="stat-value[^"]*">([^<]*)</div>
+        REGEX
+        stat_value = response.body[Regexp.new(stat_pattern, Regexp::MULTILINE), 1]
+        expect(stat_value).to eq('€ 999,99')
       end
 
       it 'shows the three lazy-loading buttons with the year of the oldest displayed expense' do
@@ -112,13 +115,13 @@ RSpec.describe 'Expenses' do
         expect(response.body).not_to include('Load all remaining expenses')
       end
 
-      it 'still shows the balance lines and the buttons when no expense falls within the last 30 days' do
+      it 'still shows the balances and the buttons when no expense falls within the last 30 days' do
         create(:expense, user: user, created_by: user, label: 'Old only', spent_on: 100.days.ago.to_date)
 
         get expenses_path
 
         expect(response.body).not_to include('Old only')
-        expect(response.body).to include('balance_user_1')
+        expect(response.body).to include('stats stats-vertical')
         expect(response.body).to include('Load 30 more days')
       end
 
@@ -261,6 +264,23 @@ RSpec.describe 'Expenses' do
         expect(response).to have_http_status(:ok)
         expect(response.body).to include('expense[label]')
       end
+
+      it 'renders a native HTML date picker for the date' do
+        get new_expense_path
+        expect(response.body).to match(/<input(?=[^>]*type="date")(?=[^>]*name="expense\[spent_on\]")[^>]*>/)
+      end
+
+      it 'marks label, amount and date as required, with min 0.01 on the amount to match the model' do
+        get new_expense_path
+
+        label_input = response.body[/<input[^>]*name="expense\[label\]"[^>]*>/]
+        amount_input = response.body[/<input[^>]*name="expense\[amount\]"[^>]*>/]
+        date_input = response.body[/<input[^>]*name="expense\[spent_on\]"[^>]*>/]
+
+        expect(label_input).to include('required="required"')
+        expect(amount_input).to include('type="number"', 'min="0.01"', 'required="required"')
+        expect(date_input).to include('type="date"', 'required="required"')
+      end
     end
 
     describe 'POST /expenses' do
@@ -269,9 +289,7 @@ RSpec.describe 'Expenses' do
           label: 'Restaurant',
           amount: '42.50',
           user_id: user.id,
-          'spent_on(1i)': today.year.to_s,
-          'spent_on(2i)': today.month.to_s,
-          'spent_on(3i)': today.day.to_s
+          spent_on: today.iso8601
         }
       end
 
@@ -292,12 +310,13 @@ RSpec.describe 'Expenses' do
     end
 
     describe 'GET /expenses/:id' do
-      it 'shows the expense' do
-        expense = create(:expense, user: user, created_by: user, label: 'Cinema')
+      it 'shows the expense with its amount formatted as currency like on the list' do
+        expense = create(:expense, user: user, created_by: user, label: 'Cinema', amount: 42.5)
 
         get expense_path(expense)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include('Cinema')
+        expect(response.body).to include('€ 42,50')
       end
     end
 
@@ -308,6 +327,13 @@ RSpec.describe 'Expenses' do
         get edit_expense_path(expense)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include('expense[label]')
+      end
+
+      it 'renders a native HTML date picker for the date' do
+        expense = create(:expense, user: user, created_by: user)
+
+        get edit_expense_path(expense)
+        expect(response.body).to match(/<input(?=[^>]*type="date")(?=[^>]*name="expense\[spent_on\]")[^>]*>/)
       end
     end
 

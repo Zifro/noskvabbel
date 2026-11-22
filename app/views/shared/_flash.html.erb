@@ -1,12 +1,7 @@
-<% if flash && (flash[:notice] || flash[:info] || flash[:warn] || flash[:error]) %>
-<div class="row-fluid">
-	<div class="span12">
-	<% if flash[:notice] %>
-	<div class="alert alert-info">
-		<a class="close" data-dismiss="alert" href="#">&times;</a>
-		<%= flash[:notice] %>
-	</div>
-	<% end %>
-</div>
-</div>
+<% { notice: 'alert-success', info: 'alert-info', warn: 'alert-warning', error: 'alert-error' }.each do |key, alert_class| %>
+  <% if flash[key] %>
+    <div class="alert <%= alert_class %> mb-4" role="alert">
+      <span><%= flash[key] %></span>
+    </div>
+  <% end %>
 <% end %>

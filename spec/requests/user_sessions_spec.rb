@@ -32,7 +32,8 @@ RSpec.describe 'UserSessions' do
         post user_sessions_path, params: { user_session: { username: user.username, password: 'wrong' } }
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to include('id="errors"')
+        expect(response.body).to include('alert alert-error')
+        expect(response.body).to include('The following errors prevented you from login in the application')
       end
     end
   end
