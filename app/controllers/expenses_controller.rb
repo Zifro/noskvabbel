@@ -104,7 +104,8 @@ private
     @users = current_user.couple.users.collect do |user|
       {
         username: user.username,
-        total: number_to_currency(user.expenses_total, unit: '€ ', separator: ',', delimiter: ' ')
+        total: number_to_currency(user.expenses_total, unit: '€ ', separator: ',', delimiter: ' '),
+        text_class: helpers.gender_text_class(user)
       }
     end
   end
@@ -173,13 +174,6 @@ private
   end
 
   def expense_params
-    params.expect(
-      expense: %i[label
-                  amount
-                  user_id
-                  spent_on(1i)
-                  spent_on(2i)
-                  spent_on(3i)]
-    ).to_h
+    params.expect(expense: %i[label amount user_id spent_on]).to_h
   end
 end

@@ -1,13 +1,8 @@
-<p><%= t('.provide_info_for_new_expense')%></p>
-<br />
-<% if @expense.errors.any? %>
-<p id="errors">
-	The following errors prevented you from recording this expense
-	<ul>
-		<% @expense.errors.full_messages.each do |msg| %>
-			<li><%= msg %></li>
-		<% end %>
-	</ul>
-</p>
-<% end %>
-<%= render partial: 'form' %>
+<div class="card bg-base-100 shadow-xl max-w-lg mx-auto">
+  <div class="card-body">
+    <h1 class="card-title text-2xl"><%= t('.record_button') %></h1>
+    <p class="text-sm text-base-content/70"><%= t('.provide_info_for_new_expense') %></p>
+
+    <%= render partial: 'form' %>
+  </div>
+</div>

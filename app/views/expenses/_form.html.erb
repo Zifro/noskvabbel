@@ -1,11 +1,43 @@
+<% if @expense.errors.any? %>
+  <div class="alert alert-error">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <div>
+      <h3 class="font-bold">The following errors prevented you from saving this expense</h3>
+      <ul class="list-disc list-inside text-sm">
+        <% @expense.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
 <%= form_for(@expense) do |f| %>
-  <%= f.label :label, t('.label') %> <%= f.text_field :label, autofocus: true %>
-  <br/>
-  <%= f.label :amount, t('.amount') %> <%= f.text_field :amount %>
-  <br/>
-	<%= f.label :user_id, t('.who') %> <%= f.select :user_id, options_for_select(current_user) %>
-	<br/>
-  <%= f.label :spent_on, t('.date') %> <%= f.date_select :spent_on, order: %i[year month day] %>
-  <br/>
-  <%= f.submit t("expenses.#{params[:action]}.record_button") %> <%= t("expenses.#{params[:action]}.or") %> <%= link_to t("expenses.#{params[:action]}.cancel"), expenses_path %>
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend"><%= t("expenses.#{params[:action]}.label") %></legend>
+    <%= f.text_field :label, class: 'input w-full', autofocus: true %>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend"><%= t("expenses.#{params[:action]}.amount") %></legend>
+    <label class="input w-full">
+      <%= f.number_field :amount, step: '0.01', min: 0, placeholder: '0.00' %>
+      <span>€</span>
+    </label>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend"><%= t("expenses.#{params[:action]}.who") %></legend>
+    <%= f.select :user_id, options_for_select(current_user), {}, class: 'select w-full' %>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend"><%= t("expenses.#{params[:action]}.date") %></legend>
+    <%= f.date_field :spent_on, class: 'input w-full' %>
+  </fieldset>
+
+  <div class="card-actions justify-end mt-6">
+    <%= link_to t("expenses.#{params[:action]}.cancel"), expenses_path, class: 'btn btn-ghost' %>
+    <%= f.submit t("expenses.#{params[:action]}.record_button"), class: 'btn btn-primary' %>
+  </div>
 <% end %>

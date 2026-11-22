@@ -18,4 +18,28 @@ module ApplicationHelper
       'gender'
     end
   end
+
+  # Returns the DaisyUI text color class corresponding to the gender of the user
+  def gender_text_class(user)
+    case user.gender
+    when 'F'
+      'text-secondary'
+    when 'M'
+      'text-info'
+    else
+      'text-base-content/60'
+    end
+  end
+
+  # Returns the DaisyUI badge class corresponding to the gender of the user
+  def gender_badge_class(user)
+    case user.gender
+    when 'F'
+      'badge-secondary'
+    when 'M'
+      'badge-info'
+    else
+      'badge-ghost'
+    end
+  end
 end
