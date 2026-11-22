@@ -310,12 +310,13 @@ RSpec.describe 'Expenses' do
     end
 
     describe 'GET /expenses/:id' do
-      it 'shows the expense' do
-        expense = create(:expense, user: user, created_by: user, label: 'Cinema')
+      it 'shows the expense with its amount formatted as currency like on the list' do
+        expense = create(:expense, user: user, created_by: user, label: 'Cinema', amount: 42.5)
 
         get expense_path(expense)
         expect(response).to have_http_status(:ok)
         expect(response.body).to include('Cinema')
+        expect(response.body).to include('€ 42,50')
       end
     end
 

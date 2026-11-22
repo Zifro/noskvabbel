@@ -8,7 +8,7 @@
       </tr>
       <tr>
         <td>Amount</td>
-        <td><%= @expense.amount %></td>
+        <td><%= number_to_currency(@expense.amount, unit: '€ ', separator: ',', delimiter: ' ') %></td>
       </tr>
       <tr>
         <td>Who</td>
