@@ -269,6 +269,18 @@ RSpec.describe 'Expenses' do
         get new_expense_path
         expect(response.body).to match(/<input(?=[^>]*type="date")(?=[^>]*name="expense\[spent_on\]")[^>]*>/)
       end
+
+      it 'marks label, amount and date as required, with min 0.01 on the amount to match the model' do
+        get new_expense_path
+
+        label_input = response.body[/<input[^>]*name="expense\[label\]"[^>]*>/]
+        amount_input = response.body[/<input[^>]*name="expense\[amount\]"[^>]*>/]
+        date_input = response.body[/<input[^>]*name="expense\[spent_on\]"[^>]*>/]
+
+        expect(label_input).to include('required="required"')
+        expect(amount_input).to include('type="number"', 'min="0.01"', 'required="required"')
+        expect(date_input).to include('type="date"', 'required="required"')
+      end
     end
 
     describe 'POST /expenses' do

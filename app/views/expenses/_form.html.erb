@@ -15,13 +15,13 @@
 <%= form_for(@expense) do |f| %>
   <fieldset class="fieldset">
     <legend class="fieldset-legend"><%= t("expenses.#{params[:action]}.label") %></legend>
-    <%= f.text_field :label, class: 'input w-full', autofocus: true %>
+    <%= f.text_field :label, class: 'input w-full', autofocus: true, required: true %>
   </fieldset>
 
   <fieldset class="fieldset">
     <legend class="fieldset-legend"><%= t("expenses.#{params[:action]}.amount") %></legend>
     <label class="input w-full">
-      <%= f.number_field :amount, step: '0.01', min: 0, placeholder: '0.00' %>
+      <%= f.number_field :amount, step: '0.01', min: 0.01, placeholder: '0.00', required: true %>
       <span>€</span>
     </label>
   </fieldset>
@@ -33,7 +33,7 @@
 
   <fieldset class="fieldset">
     <legend class="fieldset-legend"><%= t("expenses.#{params[:action]}.date") %></legend>
-    <%= f.date_field :spent_on, class: 'input w-full' %>
+    <%= f.date_field :spent_on, class: 'input w-full', required: true %>
   </fieldset>
 
   <div class="card-actions justify-end mt-6">
