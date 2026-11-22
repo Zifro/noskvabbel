@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nøskvabbel</title>
+  <link rel="stylesheet" href="full.css">
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="navbar bg-base-100 shadow-sm sticky top-0 z-30">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </div>
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <li><a>Account</a></li>
+          <li><a>Logout</a></li>
+        </ul>
+      </div>
+      <a class="btn btn-ghost text-xl font-bold text-primary">Nøskvabbel</a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <span class="text-sm">Hi <span class="font-semibold text-info">guillaume</span>! You're in couple with <span class="font-semibold text-secondary">laetitia</span>.</span>
+    </div>
+    <div class="navbar-end">
+      <a class="btn btn-ghost btn-sm hidden lg:inline-flex">Account</a>
+      <a class="btn btn-ghost btn-sm hidden lg:inline-flex">Logout</a>
+    </div>
+  </div>
+
+  <main class="container mx-auto px-4 py-6">
+    <div class="card bg-base-100 shadow-xl max-w-lg mx-auto">
+      <div class="card-body">
+        <h1 class="card-title text-2xl">Record a new expense</h1>
+        <p class="text-sm text-base-content/70">Provide the following information to record a new expense</p>
+
+        <form class="mt-2">
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Label</legend>
+            <input id="expense_label" type="text" class="input w-full" autofocus>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Amount</legend>
+            <label class="input w-full">
+              <input id="expense_amount" type="number" step="0.01" min="0" placeholder="0.00">
+              <span>€</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Who</legend>
+            <select id="expense_user_id" class="select w-full">
+              <option selected>guillaume</option>
+              <option>laetitia</option>
+            </select>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Date</legend>
+            <input id="expense_spent_on" type="date" class="input w-full" value="2026-11-22">
+          </fieldset>
+
+          <div class="card-actions justify-end mt-6">
+            <a class="btn btn-ghost">Cancel</a>
+            <button type="submit" class="btn btn-primary">Record</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

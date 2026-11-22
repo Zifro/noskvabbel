@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nøskvabbel</title>
+  <link rel="stylesheet" href="full.css">
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="navbar bg-base-100 shadow-sm">
+    <div class="navbar-start">
+      <a class="btn btn-ghost text-xl font-bold text-primary">Nøskvabbel</a>
+    </div>
+    <div class="navbar-end">
+      <span class="text-sm text-base-content/70 hidden sm:block">Sharing expenses in a couple should be very easy</span>
+    </div>
+  </div>
+
+  <main class="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 py-8">
+    <div class="card w-full max-w-sm bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h1 class="card-title justify-center text-2xl text-primary">Login</h1>
+        <div class="alert alert-error">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <div>
+            <h3 class="font-bold">The following errors prevented you from login in the application</h3>
+            <ul class="list-disc list-inside text-sm">
+              <li>Password is not valid</li>
+            </ul>
+          </div>
+        </div>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Username</legend>
+          <input id="user_session_username" type="text" placeholder="Username" class="input w-full" autofocus>
+        </fieldset>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Password</legend>
+          <input id="user_session_password" type="password" placeholder="Password" class="input w-full">
+        </fieldset>
+        <div class="mt-6">
+          <button type="submit" class="btn btn-primary w-full">Login</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

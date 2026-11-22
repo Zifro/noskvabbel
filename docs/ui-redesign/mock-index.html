@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Nøskvabbel</title>
+  <link rel="stylesheet" href="full.css">
+</head>
+<body class="min-h-screen bg-base-200">
+  <div class="navbar bg-base-100 shadow-sm sticky top-0 z-30">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </div>
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+          <li><a>Account</a></li>
+          <li><a>Logout</a></li>
+        </ul>
+      </div>
+      <a class="btn btn-ghost text-xl font-bold text-primary">Nøskvabbel</a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <span class="text-sm">Hi <span class="font-semibold text-info">guillaume</span>! You're in couple with <span class="font-semibold text-secondary">laetitia</span>.</span>
+    </div>
+    <div class="navbar-end">
+      <a class="btn btn-ghost btn-sm hidden lg:inline-flex">Account</a>
+      <a class="btn btn-ghost btn-sm hidden lg:inline-flex">Logout</a>
+    </div>
+  </div>
+
+  <main class="container mx-auto px-4 py-6">
+    <div class="alert alert-success mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      <span>Successfully logged in</span>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+      <h1 class="text-2xl font-bold">List of expenses</h1>
+      <a class="btn btn-primary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+        Record a new expense
+      </a>
+    </div>
+
+    <div class="stats stats-vertical lg:stats-horizontal shadow bg-base-100 w-full mb-6">
+      <div class="stat">
+        <div class="stat-title font-semibold text-info">guillaume</div>
+        <div class="stat-value text-info">€ 356,00</div>
+        <div class="stat-desc">Balance</div>
+      </div>
+      <div class="stat">
+        <div class="stat-title font-semibold text-secondary">laetitia</div>
+        <div class="stat-value text-secondary">€ 1,00</div>
+        <div class="stat-desc">Balance</div>
+      </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-box border border-base-300 bg-base-100 shadow">
+      <table class="table table-zebra">
+        <thead>
+          <tr>
+            <th>When</th>
+            <th>What</th>
+            <th class="text-right">How much</th>
+            <th>Who</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="expenses_rows">
+          <tr id="expense_3">
+            <td>2026-11-21</td>
+            <td>ALDI - reste</td>
+            <td class="text-right">€ 31,00</td>
+            <td><span class="badge badge-soft badge-info">guillaume</span></td>
+            <td class="whitespace-nowrap">
+              <a class="btn btn-ghost btn-xs">Details</a>
+              <a class="btn btn-ghost btn-xs">Edit</a>
+              <a class="btn btn-ghost btn-xs text-error">Delete</a>
+            </td>
+          </tr>
+          <tr id="expense_2">
+            <td>2026-11-08</td>
+            <td>Dépense</td>
+            <td class="text-right">€ 200,00</td>
+            <td><span class="badge badge-soft badge-info">guillaume</span></td>
+            <td class="whitespace-nowrap">
+              <a class="btn btn-ghost btn-xs">Details</a>
+              <a class="btn btn-ghost btn-xs">Edit</a>
+              <a class="btn btn-ghost btn-xs text-error">Delete</a>
+            </td>
+          </tr>
+          <tr id="expense_8">
+            <td>2026-11-01</td>
+            <td>Tomahawk</td>
+            <td class="text-right">€ 11,00</td>
+            <td><span class="badge badge-soft badge-info">guillaume</span></td>
+            <td class="whitespace-nowrap">
+              <a class="btn btn-ghost btn-xs">Details</a>
+              <a class="btn btn-ghost btn-xs">Edit</a>
+              <a class="btn btn-ghost btn-xs text-error">Delete</a>
+            </td>
+          </tr>
+          <tr id="expense_7">
+            <td>2023-12-21</td>
+            <td>Dépense</td>
+            <td class="text-right">€ 1,00</td>
+            <td><span class="badge badge-soft badge-secondary">laetitia</span></td>
+            <td class="whitespace-nowrap">
+              <a class="btn btn-ghost btn-xs">Details</a>
+              <a class="btn btn-ghost btn-xs">Edit</a>
+              <a class="btn btn-ghost btn-xs text-error">Delete</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="load_more_buttons" class="flex flex-wrap justify-center gap-2 mt-4">
+      <a class="btn btn-outline btn-sm">Load 30 more days</a>
+      <a class="btn btn-outline btn-sm">Load the rest of 2026</a>
+      <a class="btn btn-outline btn-sm">Load all remaining expenses</a>
+    </div>
+  </main>
+</body>
+</html>
