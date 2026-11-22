@@ -73,6 +73,22 @@ console manually on a fresh clone, run `bin/rails db:test:prepare` first.
   do not build on them. The jQuery/RJS era is fully cleaned up: there are no
   `.js.rjs` templates left, so new remote behavior should use plain
   Turbo-driven ERB.
+- If a prebuilt Tailwind/DaisyUI CSS file is vendored into
+  `app/assets/stylesheets` (built once with the Tailwind CLI run from the repo
+  root — there is no watcher), keep `config.assets.css_compressor = nil`: the
+  sassc-rails default CSS compressor cannot parse Tailwind v4 output (range
+  media queries, `oklch`, …) and fails every page that links the stylesheet.
+  Re-run the CLI from the repo root whenever classes in `app/views` change so
+  the new classes get compiled in.
+- Keep native HTML form validation in sync with the model validations
+  (`required`, `min`, `step`): invalid input should be rejected by the browser
+  instead of after a server round trip. Beware silent model-side defaults —
+  `Expense#spent_on` falls back to today when submitted empty.
+- Icon-only buttons (e.g. the navbar hamburger) need an accessible name:
+  `aria-label` backed by an i18n key. And chrome that only makes sense when
+  logged in (Account/Logout dropdown) must be wrapped in
+  `<% if current_user %>` — check the logged-out rendering of every page
+  against the mockups, not just the happy path.
 - Migrations: one change per migration, timestamped files in `db/migrate`,
   update `db/schema.rb` by running them; never edit old migrations.
 
